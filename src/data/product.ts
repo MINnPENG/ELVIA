@@ -42,8 +42,8 @@ export const products: Product[] = [
   {
     id: '3-1',
     images: [
-      '/ER-10N/ER-10N_Black_front.png',
       '/ER-10N/ER-10N_Black_on.png',
+      '/ER-10N/ER-10N_Black_front.png',
       '/ER-10N/ER-10N_Black_open.png',
       '/ER-10N/ER-10N_Black_open_on.png',
       '/ER-10N/ER-10N_inner.png',
@@ -75,8 +75,8 @@ export const products: Product[] = [
   {
     id: '3-3',
     images: [
-      '/ER-10N/ER-10N_Silver_front.png',
       '/ER-10N/ER-10N_Silver_on.png',
+      '/ER-10N/ER-10N_Silver_front.png',
       '/ER-10N/ER-10N_Silver_open.png',
       '/ER-10N/ER-10N_Silver_open_on.png',
       '/ER-10N/ER-10N_inner.png',
