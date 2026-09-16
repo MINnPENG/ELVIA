@@ -12,9 +12,9 @@ export const products: Product[] = [
   {
     id: '1',
     images: [
+      '/EL-100/EL-100_on.png',
       '/EL-100/EL-100_front.png',
       '/EL-100/EL-100_side.png',
-      '/EL-100/EL-100_on.png',
       '/EL-100/EL-100_inner.png',
       '/EL-100/EL-100_inner_side.png',
     ],
@@ -27,8 +27,8 @@ export const products: Product[] = [
   {
     id: '2',
     images: [
-      '/EL-100B/EL-100B_front.png',
       '/EL-100B/EL-100B_on.png',
+      '/EL-100B/EL-100B_front.png',
       '/EL-100B/EL-100B_inner.png',
       '/EL-100B/EL-100B_inner_side.png',
       '/EL-100B/EL-100B_IO.png',
@@ -58,8 +58,8 @@ export const products: Product[] = [
   {
     id: '3-2',
     images: [
-      '/ER-10N/ER-10N_Red_front.png',
       '/ER-10N/ER-10N_Red_on.png',
+      '/ER-10N/ER-10N_Red_front.png',
       '/ER-10N/ER-10N_Red_open.png',
       '/ER-10N/ER-10N_Red_open_on.png',
       '/ER-10N/ER-10N_Red.png',
