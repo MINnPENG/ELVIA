@@ -36,8 +36,8 @@ export default function ProductCard({
           <div className='flex flex-col gap-2'>
             <p className='text-[18px] font-bold lg:text-[16px]'>{name}</p>
             <p className='text-[15px] lg:text-[14px]'>{description}</p>
-            <div className='mt-auto flex justify-end'>
-              <ShowButton id={id} category={category} />
+            <div className='flex h-6 w-27.5 justify-end self-end'>
+              <ShowButton variant={variant} id={id} category={category} />
             </div>
           </div>
         </div>
@@ -56,8 +56,8 @@ export default function ProductCard({
             {price != undefined && (
               <p className='text-[15px] font-bold'>{price.toLocaleString()}원</p>
             )}
-            <div className='mt-3 flex'>
-              <ShowButton id={id} category={category} />
+            <div className='flex h-6 w-35 justify-end self-end'>
+              <ShowButton variant={variant} id={id} category={category} />
             </div>
           </div>
         </div>
