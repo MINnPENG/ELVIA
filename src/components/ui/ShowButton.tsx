@@ -1,19 +1,33 @@
 'use client';
 
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 interface ShowButtonProps {
   id: string;
   category: 'doorlock' | 'accessory';
+  variant?: 'home' | 'detail';
 }
 
-export default function ShowButton({ id, category }: ShowButtonProps) {
+export default function ShowButton({ id, category, variant }: ShowButtonProps) {
   return (
-    <Link
-      href={`/${category}/${id}`}
-      className='h-9.5 w-25 rounded-md bg-[#16305C] px-4 py-2.25 text-center text-[13px] font-semibold text-white hover:cursor-pointer hover:bg-[#0F1E3D] lg:h-8 lg:w-20 lg:px-3 lg:py-2 lg:text-[11px]'
-    >
-      자세히보기
-    </Link>
+    <div>
+      {variant === 'home' ? (
+        <Link
+          href={`/${category}/${id}`}
+          className='flex items-center gap-1 text-[14px] text-[#1F61C7] hover:cursor-pointer hover:text-[#132B52]'
+        >
+          자세히
+          <ArrowRight className='h-3 w-3 text-[#1F61C7]' />
+        </Link>
+      ) : (
+        <Link
+          href={`/${category}/${id}`}
+          className='text-[15px] text-[#1F61C7] hover:cursor-pointer hover:text-[#132B52]'
+        >
+          자세히 보기
+        </Link>
+      )}
+    </div>
   );
 }
