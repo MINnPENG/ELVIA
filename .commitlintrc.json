@@ -1,0 +1,28 @@
+{
+  "parserPreset": {
+    "parserOpts": {
+      "headerPattern": "^(?<type>\\S+ [A-Z][a-z]+): (?<subject>.+)$",
+      "headerCorrespondence": ["type", "subject"]
+    }
+  },
+  "rules": {
+    "type-empty": [2, "never"],
+    "subject-empty": [2, "never"],
+    "type-enum": [
+      2,
+      "always",
+      [
+        "✨ Feat",
+        "🐞 Fix",
+        "📚 Docs",
+        "💄 Design",
+        "⚒️ Refactor",
+        "⚒️\uFE0F Refactor",
+        "📦 Chore",
+        "📦\uFE0F Chore",
+        "✅ Test"
+      ]
+    ],
+    "header-max-length": [2, "always", 100]
+  }
+}
