@@ -16,7 +16,7 @@ export default function Home() {
         <div className='flex items-center justify-between px-16 py-8 lg:py-4'>
           <h3 className='text-[19px] font-bold md:text-[22px] lg:text-[19px]'>주요 제품</h3>
           <div className='flex items-center gap-1 text-gray-400 hover:cursor-pointer'>
-            <Link href='/doorlock' className='text-[12px]'>
+            <Link href='/products' className='text-[12px]'>
               전체보기
             </Link>
             <ChevronRight size={14} />
