@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import ShowButton from '../ui/ShowButton';
+import ShowButton from '../buttons/ShowButton';
 
 interface ProductCardProps {
   id: string;
@@ -10,7 +10,6 @@ interface ProductCardProps {
   description: string;
   price: number;
   variant?: 'home' | 'detail';
-  category: 'doorlock' | 'accessory';
 }
 
 export default function ProductCard({
@@ -20,7 +19,6 @@ export default function ProductCard({
   description,
   price,
   variant = 'home',
-  category,
 }: ProductCardProps) {
   return (
     <div>
@@ -36,7 +34,7 @@ export default function ProductCard({
             </div>
             <div className='mb-3 flex items-center justify-between py-2.25'>
               <p className='text-[16px] font-bold text-[#0F131A]'>{price.toLocaleString()}원</p>
-              <ShowButton id={id} variant={variant} category={category} />
+              <ShowButton id={id} variant={variant} />
             </div>
           </div>
         </div>
@@ -61,7 +59,7 @@ export default function ProductCard({
             </div>
             <div className='flex justify-between'>
               <></>
-              <ShowButton id={id} category={category} />
+              <ShowButton id={id} />
             </div>
           </div>
         </div>
