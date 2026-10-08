@@ -23,7 +23,7 @@ export default function AccessChip({
 
   return (
     <span
-      className={`inline-flex items-center gap-1 bg-[#F5F7FA] px-6 whitespace-nowrap text-[#616B7A] ${chipStyles[variant]} ${className}`}
+      className={`inline-flex items-center gap-1 bg-[#F5F7FA] px-6 font-medium whitespace-nowrap text-[#616B7A] ${chipStyles[variant]} ${className}`}
     >
       {methods.map((m, i) => (
         <Fragment key={m.id}>
