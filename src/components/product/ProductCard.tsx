@@ -11,7 +11,6 @@ interface ProductCardProps {
   description: string;
   price: number;
   variant?: 'home' | 'detail';
-  category: 'doorlock' | 'accessory';
 }
 
 export default function ProductCard({
@@ -21,7 +20,6 @@ export default function ProductCard({
   description,
   price,
   variant = 'home',
-  category,
 }: ProductCardProps) {
   return (
     <div>
@@ -37,7 +35,7 @@ export default function ProductCard({
             </div>
             <div className='mb-3 flex items-center justify-between py-2.25'>
               <p className='text-[16px] font-bold text-[#0F131A]'>{price.toLocaleString()}원</p>
-              <ShowButton id={id} variant={variant} category={category} />
+              <ShowButton id={id} variant={variant} />
             </div>
           </div>
         </div>

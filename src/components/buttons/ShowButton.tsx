@@ -5,16 +5,15 @@ import Link from 'next/link';
 
 interface ShowButtonProps {
   id: string;
-  category: 'doorlock' | 'accessory';
   variant?: 'home' | 'detail';
 }
 
-export default function ShowButton({ id, category, variant }: ShowButtonProps) {
+export default function ShowButton({ id, variant }: ShowButtonProps) {
   return (
     <div>
       {variant === 'home' ? (
         <Link
-          href={`/${category}/${id}`}
+          href={`/products/${id}`}
           className='flex items-center gap-1 text-[14px] text-[#1F61C7] hover:cursor-pointer hover:text-[#132B52]'
         >
           자세히
@@ -22,7 +21,7 @@ export default function ShowButton({ id, category, variant }: ShowButtonProps) {
         </Link>
       ) : (
         <Link
-          href={`/${category}/${id}`}
+          href={`/products/${id}`}
           className='text-[15px] text-[#1F61C7] hover:cursor-pointer hover:text-[#132B52]'
         >
           자세히 보기

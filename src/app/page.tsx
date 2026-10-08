@@ -33,7 +33,6 @@ export default function Home() {
                 name={product.name}
                 price={product.price}
                 description={product.description}
-                category={product.category}
               />
             ))}
         </div>
