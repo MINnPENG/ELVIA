@@ -60,7 +60,7 @@ export default function ProductCard({
             </div>
             <div className='flex items-center justify-between'>
               <AccessChip methods={accessMethods} variant='card' />
-              <ShowButton id={id} category={category} />
+              <ShowButton id={id} />
             </div>
           </div>
         </div>
