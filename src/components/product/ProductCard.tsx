@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import ShowButton from '../buttons/ShowButton';
-
+import AccessChip from './AccessChip';
+import { accessMethods } from '@/mock/product';
 interface ProductCardProps {
   id: string;
   image: string;
@@ -57,9 +58,9 @@ export default function ProductCard({
             <div className='flex h-12 items-center'>
               <p className='text-[28px] font-bold'>{price.toLocaleString()}원</p>
             </div>
-            <div className='flex justify-between'>
-              <></>
-              <ShowButton id={id} />
+            <div className='flex items-center justify-between'>
+              <AccessChip methods={accessMethods} variant='card' />
+              <ShowButton id={id} category={category} />
             </div>
           </div>
         </div>
