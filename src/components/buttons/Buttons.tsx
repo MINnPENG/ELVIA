@@ -19,7 +19,7 @@ const DISABLED =
   'disabled:cursor-not-allowed disabled:border-transparent disabled:bg-[#E4E7EC] disabled:text-[#98A2B3] disabled:active:scale-100';
 
 const VARIANT: Record<ButtonVariant, string> = {
-  primary: 'bg-[#0E2447] text-[#FFFFFF] hover:opacity-90',
+  primary: 'bg-[#1F66E5] text-[#FFFFFF] hover:opacity-90',
   brand: 'bg-[#071A33] text-[#FFFFFF] hover:opacity-90',
   surface: 'bg-[#FFFFFF] text-[#0F131A] hover:bg-gray-100',
 };
