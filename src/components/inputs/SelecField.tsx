@@ -1,9 +1,10 @@
 'use client';
 
-import { forwardRef, useState, type KeyboardEvent } from 'react';
+import { forwardRef, useCallback, useRef, useState, type KeyboardEvent } from 'react';
 import { cn } from '@/utils/cn';
 import FieldWrapper, { useFieldIds, type FieldBaseProps } from './FieldWrapper';
 import { fieldVariants } from './styles';
+import { REQUIRED_MESSAGE, assignRef } from './validation';
 
 export interface SelectOption {
   label: string;
@@ -48,17 +49,28 @@ const SelectField = forwardRef<HTMLButtonElement, SelectFieldProps>(
   ) => {
     const ids = useFieldIds(id);
     const listboxId = `${ids.fieldId}-listbox`;
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
 
     const [open, setOpen] = useState(false);
     const [innerValue, setInnerValue] = useState(defaultValue ?? '');
     const [activeIndex, setActiveIndex] = useState(-1);
+    const [internalError, setInternalError] = useState<string>();
 
     const isControlled = value !== undefined;
     const currentValue = isControlled ? value : innerValue;
     const selectedIndex = options.findIndex((option) => option.value === currentValue);
     const selected = options[selectedIndex];
 
-    const message = error || selected?.description || hint;
+    const displayError = error || internalError;
+    const message = displayError || selected?.description || hint;
+
+    const setRefs = useCallback(
+      (node: HTMLButtonElement | null) => {
+        buttonRef.current = node;
+        assignRef(ref, node);
+      },
+      [ref]
+    );
 
     const openList = () => {
       setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
@@ -67,6 +79,7 @@ const SelectField = forwardRef<HTMLButtonElement, SelectFieldProps>(
 
     const selectOption = (option: SelectOption) => {
       if (!isControlled) setInnerValue(option.value);
+      setInternalError(undefined);
       onChange?.(option.value);
       setOpen(false);
     };
@@ -108,12 +121,30 @@ const SelectField = forwardRef<HTMLButtonElement, SelectFieldProps>(
         containerClassName={containerClassName}
         {...ids}
         message={message}
-        isError={Boolean(error)}
+        isError={Boolean(displayError)}
       >
         <div className='relative'>
+          {(name || required) && (
+            <input
+              tabIndex={-1}
+              aria-hidden
+              className='pointer-events-none absolute inset-0 opacity-0'
+              name={name}
+              value={currentValue}
+              required={required}
+              onChange={() => {}}
+              onInvalid={(e) => {
+                e.preventDefault();
+                setInternalError(REQUIRED_MESSAGE);
+                if (e.currentTarget.form?.querySelector(':invalid') === e.currentTarget)
+                  buttonRef.current?.focus();
+              }}
+            />
+          )}
+
           <button
             id={ids.fieldId}
-            ref={ref}
+            ref={setRefs}
             type='button'
             role='combobox'
             disabled={disabled}
@@ -125,23 +156,27 @@ const SelectField = forwardRef<HTMLButtonElement, SelectFieldProps>(
               open && activeIndex >= 0 ? `${listboxId}-${activeIndex}` : undefined
             }
             aria-required={required || undefined}
-            aria-invalid={Boolean(error) || undefined}
+            aria-invalid={Boolean(displayError) || undefined}
             aria-describedby={message ? ids.messageId : undefined}
             onClick={() => (open ? setOpen(false) : openList())}
             onKeyDown={handleKeyDown}
             onBlur={() => {
               setOpen(false);
+              if (required && !currentValue) setInternalError(REQUIRED_MESSAGE);
               onBlur?.();
             }}
             className={cn(
-              fieldVariants({ hasError: Boolean(error) }),
-              'flex cursor-pointer items-center text-left',
+              fieldVariants({ hasError: Boolean(displayError) }),
+              'relative flex cursor-pointer items-center text-left',
               className,
-              open && !error && 'border-[#101828] ring-1 ring-[#101828]'
+              open && !displayError && 'border-[#101828] ring-1 ring-[#101828]'
             )}
           >
             <span
-              className={cn('truncate', !selected && (error ? 'text-[#D92D20]' : 'text-[#667085]'))}
+              className={cn(
+                'truncate',
+                !selected && (displayError ? 'text-[#D92D20]' : 'text-[#667085]')
+              )}
             >
               {selected?.label ?? placeholder}
             </span>
@@ -166,7 +201,7 @@ const SelectField = forwardRef<HTMLButtonElement, SelectFieldProps>(
                     onMouseEnter={() => setActiveIndex(index)}
                     onClick={() => selectOption(option)}
                     className={cn(
-                      'cursor-pointer px-4 py-3.25 text-sm text-[#101828] placeholder:text-[#667085]',
+                      'cursor-pointer px-4 py-3.25 text-sm text-[#101828]',
                       index === activeIndex && 'bg-gray-100',
                       isSelected && 'font-semibold'
                     )}
@@ -177,8 +212,6 @@ const SelectField = forwardRef<HTMLButtonElement, SelectFieldProps>(
               })}
             </ul>
           )}
-
-          {name && <input type='hidden' name={name} value={currentValue} />}
         </div>
       </FieldWrapper>
     );
