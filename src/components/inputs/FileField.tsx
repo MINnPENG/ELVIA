@@ -117,7 +117,7 @@ const FileField = forwardRef<HTMLInputElement, FileFieldProps>(
               className
             )}
           >
-            <span className={cn('truncate', !fileLabel && 'text-gray-400')}>
+            <span className={cn('truncate', !fileLabel && 'text-[#667085]')}>
               {fileLabel ?? placeholder}
             </span>
           </button>
