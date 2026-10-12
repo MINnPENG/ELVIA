@@ -1,13 +1,14 @@
 'use client';
 
-import { Product } from '@/data/product';
 import { useState } from 'react';
 import ProductCard from './ProductCard';
+import type { ProductView } from '@/lib/products/types';
+import { formatPrice } from '@/lib/products/labels';
 import { Pagination } from '@/public/Pagination';
 
 interface CatalogProps {
   categoryLabel: string;
-  products: Product[];
+  products: ProductView[];
   perPage?: number;
 }
 
@@ -32,16 +33,16 @@ export function ProductCatalog({ categoryLabel, products, perPage = 8 }: Catalog
       <main className='mb-2 flex-1'>
         <div className='mx-auto max-w-7xl px-6 py-8'>
           <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
-            {visible.map((products) => (
+            {visible.map((product) => (
               <ProductCard
-                key={products.id}
-                id={products.id}
-                image={products.images[0]}
-                name={products.name}
-                description={products.description}
-                price={products.price}
+                key={product.id}
+                id={product.id}
+                image={product.thumbnailUrl}
+                name={product.name}
+                description={product.shortDescription}
+                priceLabel={formatPrice(product)}
+                accessMethods={product.accessMethods}
                 variant='detail'
-                category={products.category}
               />
             ))}
           </div>

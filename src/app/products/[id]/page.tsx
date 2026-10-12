@@ -1,13 +1,11 @@
 import DetailRightSection from '@/components/product/DetailRightSection';
 import ImageSection from '@/components/product/ImageSection';
-import { getProductById, getProducts } from '@/mock/product';
+import { getPublicProductById } from '@/lib/products/queries';
 import { notFound } from 'next/navigation';
 
 export default async function DetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  // const product = getProductById(id);
-  const product = getProducts().find((p) => p.name === 'ER-10N');
-  if (!product) return null;
+  const product = await getPublicProductById(id);
 
   if (!product) notFound();
   return (
