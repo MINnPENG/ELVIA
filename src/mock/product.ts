@@ -379,7 +379,7 @@ function addFile(path: string, originalName: string, mime: string, size: number)
   const file: FileRecord = {
     id: uid('f', ++fileSeq),
     storage_path: path,
-    url: `/mock/${path}`,
+    url: `${path}`,
     original_name: originalName,
     mime_type: mime,
     size_bytes: size,
@@ -416,15 +416,16 @@ function addManual(productId: string, path: string, originalName: string) {
 }
 
 // ER-10N — 블랙이 대표(is_primary)라 상세 진입 시 블랙이 선택된 상태로 시작
-addImage(P.ER10N, 'products/er-10n/black-front.webp', C.ER10N_BLACK, 1, true);
-addImage(P.ER10N, 'products/er-10n/black-off.webp', C.ER10N_BLACK, 2);
-addImage(P.ER10N, 'products/er-10n/black-keypad.webp', C.ER10N_BLACK, 3);
-addImage(P.ER10N, 'products/er-10n/black-open.webp', C.ER10N_BLACK, 4);
-addImage(P.ER10N, 'products/er-10n/red-front.webp', C.ER10N_RED, 1);
-addImage(P.ER10N, 'products/er-10n/red-keypad.webp', C.ER10N_RED, 2);
-addImage(P.ER10N, 'products/er-10n/silver-front.webp', C.ER10N_SILVER, 1);
-addImage(P.ER10N, 'products/er-10n/silver-keypad.webp', C.ER10N_SILVER, 2);
-addImage(P.ER10N, 'products/er-10n/inside.webp', null, 10, false, {
+addImage(P.ER10N, '/ER-10N/black-1.png', C.ER10N_BLACK, 1, true);
+addImage(P.ER10N, '/ER-10N/black-2.png', C.ER10N_BLACK, 2);
+addImage(P.ER10N, '/ER-10N/black-3.png', C.ER10N_BLACK, 3);
+addImage(P.ER10N, '/ER-10N/black-4.png', C.ER10N_BLACK, 4);
+addImage(P.ER10N, '/ER-10N/red-1.png', C.ER10N_RED, 1);
+addImage(P.ER10N, '/ER-10N/red-2.png', C.ER10N_RED, 2);
+addImage(P.ER10N, '/ER-10N/red-3.png', C.ER10N_RED, 3);
+addImage(P.ER10N, '/ER-10N/silver-1.png', C.ER10N_SILVER, 1);
+addImage(P.ER10N, '/ER-10N/silver-2.png', C.ER10N_SILVER, 2);
+addImage(P.ER10N, '/ER-10N/inside.png', null, 10, false, {
   x: 0,
   y: 0.1,
   width: 1,
