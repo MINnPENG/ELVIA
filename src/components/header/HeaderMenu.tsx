@@ -13,7 +13,7 @@ const MENU_ITEMS: MenuItem[] = [
     label: '제품 소개',
     href: '/products',
   },
-  { id: 'contact', label: '고객 문의', href: '/contact' },
+  { id: 'contact', label: '고객 문의', href: '/inquiry' },
 ];
 
 export default function HeaderMenu() {
