@@ -1,11 +1,13 @@
 import ProductCard from '@/components/product/ProductCard';
 import { IconNText } from '@/components/ui/IconNText';
 import { company, contact } from '@/data/content';
-import { products } from '@/data/product';
+import { formatPrice } from '@/lib/products/labels';
+import { getPublicProducts } from '@/lib/products/queries';
 import { Building2, ChevronRight, MapPin, Phone } from 'lucide-react';
 import Link from 'next/link';
 
-export default function Home() {
+export default async function Home() {
+  const featured = await getPublicProducts({ featuredOnly: true });
   return (
     <div>
       <div className='w-full'>
@@ -23,18 +25,16 @@ export default function Home() {
           </div>
         </div>
         <div className='flex justify-center gap-6 px-6'>
-          {products
-            .filter((product) => product.isHome)
-            .map((product) => (
-              <ProductCard
-                id={product.id}
-                key={product.id}
-                image={product.images[0]}
-                name={product.name}
-                price={product.price}
-                description={product.description}
-              />
-            ))}
+          {featured.map((product) => (
+            <ProductCard
+              id={product.id}
+              key={product.id}
+              image={product.thumbnailUrl}
+              name={product.name}
+              priceLabel={formatPrice(product)}
+              description={product.shortDescription}
+            />
+          ))}
         </div>
       </div>
 

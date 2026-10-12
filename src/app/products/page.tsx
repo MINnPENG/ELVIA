@@ -1,8 +1,8 @@
 import { ProductCatalog } from '@/components/product/ProductCatalog';
-import { products } from '@/data/product';
+import { getPublicProducts } from '@/lib/products/queries';
 
-export default function DoorLockPage() {
-  const doorlockProducts = products.filter((p) => p.category === 'doorlock');
+export default async function DoorLockPage() {
+  const products = await getPublicProducts({ category: 'DOOR_LOCK' });
 
-  return <ProductCatalog categoryLabel='도어록' products={doorlockProducts} perPage={8} />;
+  return <ProductCatalog categoryLabel='도어록' products={products} perPage={8} />;
 }

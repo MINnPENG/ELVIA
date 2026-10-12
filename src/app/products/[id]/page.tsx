@@ -1,10 +1,10 @@
 import DetailRightSection from '@/components/product/DetailRightSection';
-import { getProductById } from '@/mock/product';
+import { getPublicProductById } from '@/lib/products/queries';
 import { notFound } from 'next/navigation';
 
 export default async function DetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const product = getProductById(id);
+  const product = await getPublicProductById(id);
 
   if (!product) notFound();
   return (

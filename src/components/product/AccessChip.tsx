@@ -1,5 +1,5 @@
-import type { AccessMethod } from '@/mock/product';
-import { Fragment } from 'react/jsx-runtime';
+import { Fragment } from 'react';
+import type { AccessMethodView } from '@/lib/products/types';
 
 const chipStyles = {
   card: 'text-[13px] rounded-[10px] h-[34px]',
@@ -9,7 +9,7 @@ const chipStyles = {
 type ChipVariant = keyof typeof chipStyles;
 
 type AccessChipProps = {
-  methods: AccessMethod[];
+  methods: AccessMethodView[];
   variant?: ChipVariant;
   className?: string;
 };
@@ -26,7 +26,7 @@ export default function AccessChip({
       className={`inline-flex items-center gap-1 bg-[#F5F7FA] px-6 font-medium whitespace-nowrap text-[#616B7A] ${chipStyles[variant]} ${className}`}
     >
       {methods.map((m, i) => (
-        <Fragment key={m.id}>
+        <Fragment key={m.code}>
           {i > 0 && <span aria-hidden='true'>·</span>}
           {m.name}
         </Fragment>
