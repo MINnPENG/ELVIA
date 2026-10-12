@@ -1,11 +1,7 @@
-export type ColorOption = {
-  id: string;
-  color_name: string;
-  color_code: string;
-};
+import { ColorView } from '@/lib/products/types';
 
 interface ColorChipGroupProps {
-  colors: ColorOption[];
+  colors: ColorView[];
   selectedId: string | null;
   onChange: (id: string) => void;
 }
@@ -15,9 +11,9 @@ export default function ColorChipGroup({ colors, selectedId, onChange }: ColorCh
 
   return (
     <div className='flex items-center justify-between'>
-      <p className='text-sm font-bold text-gray-900'>색상 - {selected?.color_name}</p>
+      <p className='text-[14px] font-bold text-[#0E2447]'>색상 - {selected?.name}</p>
 
-      <div role='radiogroup' aria-label='색상 선택' className='flex items-center gap-3'>
+      <div role='radiogroup' aria-label='색상 선택' className='flex items-center gap-5.5'>
         {colors.map((color) => {
           const isSelected = color.id === selectedId;
           return (
@@ -26,12 +22,12 @@ export default function ColorChipGroup({ colors, selectedId, onChange }: ColorCh
               type='button'
               role='radio'
               aria-checked={isSelected}
-              aria-label={color.color_name}
-              title={color.color_name}
+              aria-label={color.name}
+              title={color.name}
               onClick={() => onChange(color.id)}
-              style={{ backgroundColor: color.color_code }}
-              className={`h-7 w-7 rounded-full border border-black/10 ring-offset-2 transition ${
-                isSelected ? 'ring-2 ring-blue-600' : 'hover:ring-2 hover:ring-gray-300'
+              style={{ backgroundColor: color.code ?? undefined }}
+              className={`h-6 w-6 rounded-full border border-black/10 ring-offset-2 transition ${
+                isSelected ? 'ring-2 ring-[#1F61C7]' : 'hover:ring-2 hover:ring-[#1F61C7]'
               }`}
             />
           );

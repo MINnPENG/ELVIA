@@ -3,7 +3,6 @@ import Image from 'next/image';
 export type ImageType = {
   id: string;
   url: string;
-  color_id: string | null;
 };
 
 interface ProductImageListProps {
@@ -33,8 +32,8 @@ export default function ProductImageList({ images, activeIndex, onSelect }: Prod
                 src={image.url}
                 alt={`${index + 1}번째 이미지`}
                 fill
-                sizes='80px'
-                className='object-contain'
+                sizes='75px'
+                className='object-contain p-2'
               />
             </button>
           </li>

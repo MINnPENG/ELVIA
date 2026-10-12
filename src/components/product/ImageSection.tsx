@@ -1,33 +1,56 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductImageList, { ImageType } from './ProductImageList';
 import Image from 'next/image';
-import ColorChipGroup, { ColorOption } from './ColorChipGroup';
+import ColorChipGroup from './ColorChipGroup';
 import ImageDots from './ImageDots';
+import { ImageView, ProductView } from '@/lib/products/types';
 
 const MAX_IMAGES = 5;
+const AUTO_SLIDE_MS = 7000;
 
-type GalleryProduct = {
-  name: string;
-  images: ImageType[];
-  colors: ColorOption[];
-  primaryImage: ImageType | null;
+function getImagesForColor(images: ImageView[], colorId: string | null): ImageType[] {
+  const matched = images.flatMap((img) => {
+    const variant =
+      img.variants.find((v) => v.colorId === colorId) ??
+      img.variants.find((v) => v.colorId === null);
+    return variant ? [{ id: img.id, url: variant.url }] : [];
+  });
+
+  if (matched.length > 0) return matched;
+
+  return images.flatMap((img) =>
+    img.variants[0] ? [{ id: img.id, url: img.variants[0].url }] : []
+  );
+}
+
+type ImageSectionProps = {
+  product: Pick<ProductView, 'name' | 'images' | 'colors'>;
 };
 
-export default function ImageSection({ product }: { product: GalleryProduct }) {
-  const { name, images, colors, primaryImage } = product;
+export default function ImageSection({ product }: ImageSectionProps) {
+  const { name, images, colors } = product;
 
   const [colorId, setColorId] = useState<string | null>(
-    primaryImage?.color_id ?? colors[0]?.id ?? null
+    (colors.find((c) => c.isDefault) ?? colors[0])?.id ?? null
   );
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const matched = images.filter((i) => i.color_id === colorId || i.color_id === null);
-  const currentImages = (matched.length > 0 ? matched : images).slice(0, MAX_IMAGES);
+  const currentImages = getImagesForColor(images, colorId).slice(0, MAX_IMAGES);
 
   const safeIndex = Math.min(activeIndex, Math.max(currentImages.length - 1, 0));
   const mainImage = currentImages[safeIndex];
+
+  useEffect(() => {
+    if (currentImages.length <= 1) return;
+
+    const timer = setTimeout(() => {
+      setActiveIndex((safeIndex + 1) % currentImages.length);
+    }, AUTO_SLIDE_MS);
+
+    return () => clearTimeout(timer);
+  }, [safeIndex, colorId, currentImages.length]);
 
   const handleColorChange = (id: string) => {
     if (id === colorId) return;
@@ -49,13 +72,13 @@ export default function ImageSection({ product }: { product: GalleryProduct }) {
         <div className='relative aspect-6/7 flex-1 overflow-hidden rounded-2xl bg-[#F6F8FA]'>
           {mainImage ? (
             <Image
-              key={mainImage.id}
+              key={mainImage.url}
               src={mainImage.url}
               alt={`${name} 이미지 ${safeIndex + 1}`}
               fill
               priority
               sizes='(max-width: 768px) 80vw, 540px'
-              className='object-contain p-3'
+              className='object-contain p-10'
             />
           ) : (
             <div className='flex h-full items-center justify-center text-sm text-gray-400'>
