@@ -15,9 +15,6 @@ import { ActionButton, SubmitButton } from '../buttons/Buttons';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
-const primaryButton =
-  'h-12 rounded-lg bg-[#101828] px-6 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-[#D0D5DD]';
-
 const INQUIRY_TYPES: SelectOption[] = [
   { label: '수리 문의', value: 'repair', description: '고장·A/S 접수 문의' },
   { label: '구매 문의', value: 'purchase', description: '가격·구매처 문의' },
@@ -40,7 +37,7 @@ export default function InquiryForm() {
   const resetForm = () => {
     setValues(INITIAL_INQUIRY);
     setAgreed(false);
-    setFormKey((key) => key + 1); // Input 내부 상태(에러, 첨부파일 표시)까지 초기화
+    setFormKey((key) => key + 1);
   };
 
   const send = async () => {
@@ -138,13 +135,13 @@ export default function InquiryForm() {
           />
         </div>
 
-        <div className='flex flex-col gap-7 border-[#EAECF0] pt-6 md:justify-between'>
+        <div className='flex flex-col gap-7 pt-6 md:justify-between'>
           <label className='flex cursor-pointer items-center gap-0.5 text-[14px] leading-5.5 text-[#101828]'>
             <input
               type='checkbox'
               checked={agreed}
               onChange={(e) => setAgreed(e.target.checked)}
-              className='size-5 cursor-pointer accent-[#071A33]'
+              className='size-5 cursor-pointer border-[#D0D5DD] accent-[#1F66E5]'
             />
             개인정보 수집·이용에 동의합니다.{' '}
             <Link href='/' className='ml-1'>
