@@ -8,7 +8,7 @@ export default function DetailRightSection({ product }: { product: ProductView }
   const priceLabel = formatPrice(product);
 
   return (
-    <div className='flex flex-col justify-center gap-19.25'>
+    <div className='flex h-full flex-col justify-between gap-10'>
       <div>
         <p className='mb-5 text-[14px] font-bold text-[#1F61C7]'>ELVIA SMART LOCK</p>
         <p className='mb-4 text-[48px] font-bold text-[#0F131A]'>{product.name}</p>
@@ -32,7 +32,7 @@ export default function DetailRightSection({ product }: { product: ProductView }
         </div>
         <div>
           <p className='text-[16px] font-bold text-[#0F131A]'>주요 기능</p>
-          <div className='grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4'>
+          <div className='grid grid-cols-1 gap-2 sm:w-80 md:w-full md:grid-cols-2 lg:grid-cols-4'>
             {product.features.slice(0, 4).map((feature) => (
               <FeatureCard key={feature.code} feature={feature} />
             ))}
@@ -43,7 +43,7 @@ export default function DetailRightSection({ product }: { product: ProductView }
         <LinkButton
           variant='brand'
           href='/inquiry'
-          className='h-15 rounded-md px-15 py-4.25 text-[16px] font-bold'
+          className='h-15 flex-1 rounded-md px-15 py-4.25 text-[16px] font-bold'
         >
           제품 사용 문의하기
         </LinkButton>

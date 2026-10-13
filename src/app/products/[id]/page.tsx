@@ -1,4 +1,5 @@
 import DetailRightSection from '@/components/product/DetailRightSection';
+import ImageSection from '@/components/product/ImageSection';
 import { getPublicProductById } from '@/lib/products/queries';
 import { notFound } from 'next/navigation';
 
@@ -8,7 +9,8 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
 
   if (!product) notFound();
   return (
-    <div>
+    <div className='grid gap-6 px-6 py-16 lg:grid-cols-2'>
+      <ImageSection product={product} />
       <DetailRightSection product={product} />
     </div>
   );
