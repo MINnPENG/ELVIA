@@ -5,7 +5,6 @@ import TextField, { type TextFieldProps } from './TextField';
 import TextareaField, { type TextareaFieldProps } from './StringField';
 import SelectField, { type SelectFieldProps } from './SelecField';
 import FileField, { type FileFieldProps } from './FileField';
-import { REQUIRED_MESSAGE, Validator } from './validation';
 
 export type { SelectOption } from './SelecField';
 export { REQUIRED_MESSAGE, type Validator } from './validation';

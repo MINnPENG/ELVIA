@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 import FieldWrapper, { useFieldIds, type FieldBaseProps } from './FieldWrapper';
 import { fieldVariants } from './styles';
 import { REQUIRED_MESSAGE, assignRef } from './validation';
+import { ChevronDown } from 'lucide-react';
 
 export interface SelectOption {
   label: string;
@@ -167,19 +168,26 @@ const SelectField = forwardRef<HTMLButtonElement, SelectFieldProps>(
             }}
             className={cn(
               fieldVariants({ hasError: Boolean(displayError) }),
-              'relative flex cursor-pointer items-center text-left',
+              'relative flex cursor-pointer items-center justify-between gap-6 text-left',
               className,
               open && !displayError && 'border-[#101828] ring-1 ring-[#101828]'
             )}
           >
             <span
               className={cn(
-                'truncate',
+                'min-w-0 truncate',
                 !selected && (displayError ? 'text-[#D92D20]' : 'text-[#667085]')
               )}
             >
               {selected?.label ?? placeholder}
             </span>
+            <ChevronDown
+              aria-hidden
+              className={cn(
+                'h-3 w-3 shrink-0 text-[#667085] transition-transform',
+                open && 'rotate-180'
+              )}
+            />
           </button>
 
           {open && (
