@@ -14,17 +14,19 @@ export default async function Home() {
         <video className='h-auto w-full' src='/banner_video.mp4' autoPlay loop muted playsInline />
       </div>
 
-      <div className='flex flex-col'>
-        <div className='flex items-center justify-between px-16 py-8 lg:py-4'>
-          <h3 className='text-[19px] font-bold md:text-[22px] lg:text-[19px]'>주요 제품</h3>
-          <div className='flex items-center gap-1 text-gray-400 hover:cursor-pointer'>
-            <Link href='/products' className='text-[12px]'>
+      <div className='flex flex-col gap-8 px-6 py-10'>
+        <div className='flex items-center justify-between lg:py-4'>
+          <h3 className='text-[19px] font-bold text-[#0F131A] md:text-[22px] lg:text-[32px]'>
+            주요 제품
+          </h3>
+          <div className='flex items-center gap-1 text-[#0F131A] hover:cursor-pointer'>
+            <Link href='/products' className='text-[16 px]'>
               전체보기
             </Link>
             <ChevronRight size={14} />
           </div>
         </div>
-        <div className='flex justify-center gap-6 px-6'>
+        <div className='mx-auto grid grid-cols-1 justify-center gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {featured.map((product) => (
             <ProductCard
               id={product.id}
@@ -38,18 +40,14 @@ export default async function Home() {
         </div>
       </div>
 
-      <hr className='mx-8 mt-6 border-gray-200' />
+      <hr className='mx-6 mt-6 border-[#EAECF0]' />
 
-      <div className='flex gap-10 px-16 py-8 lg:py-4'>
-        <div className='flex min-w-0 flex-1 flex-col gap-1'>
-          <h3 className='text-[19px] font-bold md:text-[22px] lg:text-[19px]'>회사 소개</h3>
-          <p className='text-[13px]'>{company.desciption}</p>
-        </div>
-        <div className='flex min-w-0 flex-1 flex-col gap-1'>
-          <h3 className='text-[19px] font-bold md:text-[22px] lg:text-[19px]'>고객 지원</h3>
-          <IconNText icon={Building2} text={contact.name} />
-          <IconNText icon={MapPin} text={contact.address} />
-          <IconNText icon={Phone} text={contact.tel} />
+      <div className='flex gap-10 px-6 py-8'>
+        <div className='flex min-w-0 flex-1 flex-col gap-3'>
+          <h3 className='text-[19px] font-bold text-[#0F131A] md:text-[22px] lg:text-[32px]'>
+            회사 소개
+          </h3>
+          <p className='text-[16px]'>{company.desciption}</p>
         </div>
       </div>
     </div>
