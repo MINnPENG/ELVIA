@@ -1,4 +1,4 @@
-import { InquiryListItem, InquiryStatus } from '@/mock/inquiry';
+import { InquiryListItem, InquiryStatus } from '@/lib/inquiries/types';
 import InquiryItem from './InquiryItem';
 import { LinkButton } from '../buttons/Buttons';
 import InquiryListFilter from './InquiryListFilter';

@@ -1,6 +1,14 @@
+import type { CreatedInquiry } from '@/lib/inquiries/schema';
+import { formatDateTime } from '@/lib/inquiries/format';
 import { LinkButton } from '../buttons/Buttons';
 
-export default function SubmittedCard() {
+const TYPE_LABEL: Record<CreatedInquiry['inquiryType'], string> = {
+  repair: '수리 문의',
+  purchase: '구매 문의',
+  product: '제품 사용 문의',
+};
+
+export default function SubmittedCard({ inquiry }: { inquiry: CreatedInquiry }) {
   return (
     <div className='flex flex-col gap-7'>
       <p className='text-[14px] leading-5 font-bold text-[#071A33]'>접수 완료</p>
@@ -15,16 +23,22 @@ export default function SubmittedCard() {
       <hr className='border-t border-[#EAECF0]' />
 
       <div className='flex items-center justify-between'>
+        <p className='text-[14px] leading-5.5 text-[#667085]'>접수 번호</p>
+        <p className='text-[16px] leading-6.5 text-[#101828]'>{inquiry.inquiryNo}</p>
+      </div>
+      <div className='flex items-center justify-between'>
         <p className='text-[14px] leading-5.5 text-[#667085]'>조회 이메일</p>
-        <p className='text-[16px] leading-6.5 text-[#101828]'>ELVIA@example.com</p>
+        <p className='text-[16px] leading-6.5 text-[#101828]'>{inquiry.email}</p>
       </div>
       <div className='flex items-center justify-between'>
         <p className='text-[14px] leading-5.5 text-[#667085]'>문의 유형</p>
-        <p className='text-[16px] leading-6.5 text-[#101828]'>제품 사용 문의</p>
+        <p className='text-[16px] leading-6.5 text-[#101828]'>{TYPE_LABEL[inquiry.inquiryType]}</p>
       </div>
       <div className='flex items-center justify-between'>
         <p className='text-[14px] leading-5.5 text-[#667085]'>접수 일시</p>
-        <p className='text-[16px] leading-6.5 text-[#101828]'>2026.10.10 02:49</p>
+        <p className='text-[16px] leading-6.5 text-[#101828]'>
+          {formatDateTime(inquiry.createdAt)}
+        </p>
       </div>
 
       <div className='flex items-center justify-end gap-3'>
@@ -36,7 +50,7 @@ export default function SubmittedCard() {
           홈으로
         </LinkButton>
         <LinkButton
-          href='/QnA'
+          href='/inquiry-list'
           className='h-12 w-45 rounded-lg px-5 py-3.5 text-[14px] leading-5 font-bold'
         >
           문의 확인

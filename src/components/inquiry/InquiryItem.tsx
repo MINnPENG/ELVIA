@@ -1,4 +1,5 @@
-import { INQUIRY_TYPE_LABEL, InquiryListItem, InquiryStatus } from '@/mock/inquiry';
+import { formatDateTime } from '@/lib/inquiries/format';
+import { INQUIRY_TYPE_LABEL, InquiryListItem, InquiryStatus } from '@/lib/inquiries/types';
 import StatusChip from './StatusChip';
 import Link from 'next/link';
 
@@ -22,8 +23,6 @@ export default function InquiryItem({
   if (status) params.set('status', status);
   if (keyword) params.set('keyword', keyword);
 
-  const formatDate = (iso: string) => iso.slice(0, 16).replace('T', ' ');
-
   return (
     <li className='border-b border-[#EAECF0]'>
       <Link
@@ -36,7 +35,7 @@ export default function InquiryItem({
         <div className='flex flex-col gap-1.5'>
           <p className='text-[20px] leading-7 font-bold text-[#101828]'>{inquiry.title}</p>
           <p className='text-[14px] leading-5.5 text-[#667085]'>
-            {formatDate(inquiry.created_at)} · {INQUIRY_TYPE_LABEL[inquiry.inquiry_type]}
+            {formatDateTime(inquiry.created_at)} · {INQUIRY_TYPE_LABEL[inquiry.inquiry_type]}
           </p>
         </div>
         <div>

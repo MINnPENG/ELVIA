@@ -1,7 +1,7 @@
-import { INQUIRY_STATUS_LABEL, InquiryStatus } from '@/mock/inquiry';
+import { INQUIRY_STATUS_LABEL, InquiryStatus } from '@/lib/inquiries/types';
 
 const STATUS_STYLE: Record<InquiryStatus, string> = {
-  ANSWERED: 'text-[#087A55] bg-[#ECFDF3]',
+  COMPLETED: 'text-[#087A55] bg-[#ECFDF3]',
   WAITING: 'text-[#B54708] bg-[#FFF4E5]',
 };
 

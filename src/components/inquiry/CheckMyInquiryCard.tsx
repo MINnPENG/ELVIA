@@ -4,16 +4,14 @@ import Input from '../inputs';
 import { SubmitButton } from '../buttons/Buttons';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState, useTransition } from 'react';
-import { verifyInquiryAccess } from '@/mock/inquiry';
-
-const AUTH_ERROR = '이메일 또는 비밀번호가 일치하지 않습니다.';
+import { verifyInquiryAccessAction } from '@/app/inquiry-list/actions';
 
 export default function CheckMyInquiryCard({ selectedId }: { selectedId: string | null }) {
   const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [failed, setFailed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -22,10 +20,10 @@ export default function CheckMyInquiryCard({ selectedId }: { selectedId: string 
     if (!selectedId) return;
 
     startTransition(async () => {
-      const result = await verifyInquiryAccess(selectedId, email, password);
+      const result = await verifyInquiryAccessAction(selectedId, email, password);
 
-      if (result?.answer) router.push(`/inquiry-list/${selectedId}`);
-      else setFailed(true);
+      if (result.ok) router.push(`/inquiry-list/${selectedId}`);
+      else setErrorMessage(result.error);
     });
   };
 
@@ -46,7 +44,7 @@ export default function CheckMyInquiryCard({ selectedId }: { selectedId: string 
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
-            setFailed(false);
+            setErrorMessage('');
           }}
           disabled={!selectedId}
         />
@@ -60,9 +58,9 @@ export default function CheckMyInquiryCard({ selectedId }: { selectedId: string 
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
-            setFailed(false);
+            setErrorMessage('');
           }}
-          error={failed ? AUTH_ERROR : undefined}
+          error={errorMessage || undefined}
           disabled={!selectedId}
         />
 

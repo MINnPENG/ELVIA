@@ -1,6 +1,6 @@
 'use client';
 
-import { InquiryStatus } from '@/mock/inquiry';
+import { InquiryStatus } from '@/lib/inquiries/types';
 import Input, { SelectOption } from '../inputs';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -8,7 +8,7 @@ import { ActionButton } from '../buttons/Buttons';
 
 const INQUIRY_STATUS: SelectOption[] = [
   { label: '전체 상태', value: '' },
-  { label: '답변 완료', value: 'ANSWERED' },
+  { label: '답변 완료', value: 'COMPLETED' },
   { label: '답변 대기', value: 'WAITING' },
 ];
 

@@ -1,8 +1,7 @@
 import CheckMyInquiryCard from '@/components/inquiry/CheckMyInquiryCard';
 import InquiryList from '@/components/inquiry/InquiryList';
-import { getInquiries, InquiryStatus } from '@/mock/inquiry';
-
-const STATUSES: InquiryStatus[] = ['WAITING', 'ANSWERED'];
+import InquiryPagination from '@/components/inquiry/InquiryPagination';
+import { getInquiryList, parsePage, parseStatus } from '@/lib/inquiries/queries';
 
 export default async function InquiryListPage({
   searchParams,
@@ -11,13 +10,11 @@ export default async function InquiryListPage({
 }) {
   const { page, selected, status, keyword } = await searchParams;
 
-  const currentPage = Number(page) || 1;
-  const currentStatus = STATUSES.includes(status as InquiryStatus)
-    ? (status as InquiryStatus)
-    : undefined;
-  const currentKeyword = keyword?.trim() || undefined;
+  const currentPage = parsePage(page);
+  const currentStatus = parseStatus(status);
+  const currentKeyword = keyword?.trim().slice(0, 50) || undefined;
 
-  const { items } = getInquiries({
+  const { items, totalPages } = await getInquiryList({
     status: currentStatus,
     keyword: currentKeyword,
     page: currentPage,
@@ -27,13 +24,16 @@ export default async function InquiryListPage({
 
   return (
     <div className='flex gap-5'>
-      <InquiryList
-        inquiries={items}
-        selectedId={selectedId}
-        page={currentPage}
-        status={currentStatus}
-        keyword={currentKeyword}
-      />
+      <div className='flex min-w-0 flex-col'>
+        <InquiryList
+          inquiries={items}
+          selectedId={selectedId}
+          page={currentPage}
+          status={currentStatus}
+          keyword={currentKeyword}
+        />
+        <InquiryPagination page={currentPage} totalPages={totalPages} />
+      </div>
       <CheckMyInquiryCard key={selectedId ?? 'none'} selectedId={selectedId} />
     </div>
   );
