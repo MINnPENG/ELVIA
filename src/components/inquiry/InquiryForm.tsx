@@ -11,7 +11,9 @@ import {
 } from '../inputs/inquiry';
 import Input, { SelectOption } from '../inputs';
 import Link from 'next/link';
+import type { CreatedInquiry } from '@/lib/inquiries/schema';
 import { ActionButton, SubmitButton } from '../buttons/Buttons';
+import SubmittedCard from './SubmittedCard';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -25,7 +27,8 @@ export default function InquiryForm() {
   const [values, setValues] = useState<InquiryFormValues>(INITIAL_INQUIRY);
   const [agreed, setAgreed] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
-  const [inquiryId, setInquiryId] = useState('');
+  const [submitted, setSubmitted] = useState<CreatedInquiry | null>(null);
+  const [errorMessage, setErrorMessage] = useState('');
   const [formKey, setFormKey] = useState(0);
 
   const isSubmitting = status === 'submitting';
@@ -42,12 +45,14 @@ export default function InquiryForm() {
 
   const send = async () => {
     setStatus('submitting');
+    setErrorMessage('');
     try {
-      const result = await submitInquiry(values);
-      setInquiryId(result.inquiryId);
+      const result = await submitInquiry(values, agreed);
+      setSubmitted(result);
       setStatus('success');
       resetForm();
-    } catch {
+    } catch (e) {
+      setErrorMessage(e instanceof Error ? e.message : '문의 접수 중 문제가 생겼습니다.');
       setStatus('error');
     }
   };
@@ -57,6 +62,8 @@ export default function InquiryForm() {
     if (isSubmitting || !agreed) return;
     send();
   };
+
+  if (submitted) return <SubmittedCard inquiry={submitted} />;
 
   return (
     <>
@@ -134,6 +141,12 @@ export default function InquiryForm() {
             onChange={(e) => updateField('password', e.target.value)}
           />
         </div>
+
+        {status === 'error' && (
+          <p role='alert' className='text-[14px] leading-5.5 text-[#D92D20]'>
+            {errorMessage}
+          </p>
+        )}
 
         <div className='flex flex-col gap-7 pt-6 md:justify-between'>
           <label className='flex cursor-pointer items-center gap-0.5 text-[14px] leading-5.5 text-[#101828]'>

@@ -1,3 +1,5 @@
+import { submitInquiryAction } from '@/app/inquiry-list/create-inquiry/actions';
+import type { CreatedInquiry } from '@/lib/inquiries/schema';
 import { Validator } from './validation';
 
 export interface InquiryFormValues {
@@ -34,9 +36,22 @@ export const validatePassword: Validator = (value) =>
 export const validateEmail: Validator = (value) =>
   EMAIL_REGEX.test(value.trim()) ? undefined : '이메일 형식이 올바르지 않습니다.';
 
-export async function submitInquiry(values: InquiryFormValues): Promise<{ inquiryId: string }> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+export async function submitInquiry(
+  values: InquiryFormValues,
+  agreed: boolean
+): Promise<CreatedInquiry> {
+  const formData = new FormData();
+  formData.set('type', values.type);
+  formData.set('productName', values.productName);
+  formData.set('name', values.name);
+  formData.set('email', values.email);
+  formData.set('title', values.title);
+  formData.set('content', values.content);
+  formData.set('password', values.password);
+  formData.set('consent', String(agreed));
+  if (values.file) formData.set('file', values.file);
 
-  console.log('[submitInquiry] mock', values);
-  return { inquiryId: String(Date.now()).slice(-6) };
+  const result = await submitInquiryAction(formData);
+  if (!result.ok) throw new Error(result.error);
+  return result.inquiry;
 }
