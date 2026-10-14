@@ -17,7 +17,8 @@ export default function InquiryItem({
   status,
   keyword,
 }: InquiryItemsProps) {
-  const params = new URLSearchParams({ page: String(page), selected: inquiry.id });
+  const params = new URLSearchParams({ page: String(page) });
+  if (!isSelected) params.set('selected', inquiry.id);
   if (status) params.set('status', status);
   if (keyword) params.set('keyword', keyword);
 

@@ -28,7 +28,7 @@ export default function ProductCard({
     <div>
       {variant === 'home' ? (
         <div className='flex flex-col justify-center gap-3 rounded-[10px] border border-gray-300 px-4.75 py-5 lg:max-w-82.5'>
-          <div className='flex h-78.5 items-center justify-center rounded-lg bg-[#F5F7FA]'>
+          <div className='flex h-65 items-center justify-center rounded-lg bg-[#F5F7FA] p-5'>
             {image && (
               <Image
                 src={image}
@@ -57,8 +57,8 @@ export default function ProductCard({
               <Image
                 src={image}
                 alt={name}
-                width={250}
-                height={250}
+                width={120}
+                height={220}
                 className='h-full w-auto object-contain py-3'
               />
             )}
