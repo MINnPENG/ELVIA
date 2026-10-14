@@ -42,7 +42,7 @@ export default function DetailRightSection({ product }: { product: ProductView }
       <div className='flex gap-4'>
         <LinkButton
           variant='brand'
-          href='/inquiry'
+          href='/inquiry-list/create-inquiry'
           className='h-15 flex-1 rounded-md px-15 py-4.25 text-[16px] font-bold'
         >
           제품 사용 문의하기

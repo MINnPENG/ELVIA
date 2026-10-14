@@ -1,4 +1,5 @@
 import type { CreatedInquiry } from '@/lib/inquiries/schema';
+import { formatDateTime } from '@/lib/inquiries/format';
 import { LinkButton } from '../buttons/Buttons';
 
 const TYPE_LABEL: Record<CreatedInquiry['inquiryType'], string> = {
@@ -6,20 +7,6 @@ const TYPE_LABEL: Record<CreatedInquiry['inquiryType'], string> = {
   purchase: '구매 문의',
   product: '제품 사용 문의',
 };
-
-const formatDateTime = (iso: string) =>
-  new Intl.DateTimeFormat('ko-KR', {
-    timeZone: 'Asia/Seoul',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  })
-    .format(new Date(iso))
-    .replace(/\.\s/g, '.')
-    .replace(/\.\s?(\d{2}:\d{2})$/, ' $1');
 
 export default function SubmittedCard({ inquiry }: { inquiry: CreatedInquiry }) {
   return (
@@ -63,7 +50,7 @@ export default function SubmittedCard({ inquiry }: { inquiry: CreatedInquiry }) 
           홈으로
         </LinkButton>
         <LinkButton
-          href='/QnA'
+          href='/inquiry-list'
           className='h-12 w-45 rounded-lg px-5 py-3.5 text-[14px] leading-5 font-bold'
         >
           문의 확인
