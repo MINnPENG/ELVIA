@@ -1,7 +1,7 @@
 export default function InquiryFlowCard() {
   return (
-    <div className='flex flex-col border-b border-l border-[#EAECF0]'>
-      <div className='flex flex-col gap-1.5 p-6'>
+    <div className='flex flex-col border-b border-[#EAECF0] lg:border-l'>
+      <div className='flex flex-col gap-1.5 py-6 pr-50 pl-6'>
         <p className='text-[12px] leading-4.5 text-[#0B2447]'>01</p>
         <p className='text-[20px] leading-6.5 font-bold text-[#101828]'>문의 접수</p>
         <p className='text-[14px] leading-5.5 text-[#667085]'>
