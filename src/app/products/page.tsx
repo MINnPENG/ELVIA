@@ -1,8 +1,23 @@
 import { ProductCatalog } from '@/components/product/ProductCatalog';
+import { categoryFromSlug } from '@/lib/products/categories';
 import { getPublicProducts } from '@/lib/products/queries';
 
-export default async function DoorLockPage() {
-  const products = await getPublicProducts({ category: 'DOOR_LOCK' });
+interface ProductPageProps {
+  searchParams: Promise<{ category?: string }>;
+}
 
-  return <ProductCatalog categoryLabel='도어록' products={products} perPage={8} />;
+export default async function DoorLockPage({ searchParams }: ProductPageProps) {
+  const { category } = await searchParams;
+
+  const [doorLocks, accessories] = await Promise.all([
+    getPublicProducts({ category: 'DOOR_LOCK' }),
+    getPublicProducts({ category: 'ACCESSORY' }),
+  ]);
+
+  return (
+    <ProductCatalog
+      productsByCategory={{ DOOR_LOCK: doorLocks, ACCESSORY: accessories }}
+      initialCategory={categoryFromSlug(category)}
+    />
+  );
 }
