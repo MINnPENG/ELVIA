@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 
 import { supabaseAdmin } from '@/lib/supabase/admin';
 
-import type { InquiryAccessResult, InquiryDetail } from './types';
+import type { InquiryDetail } from './types';
 
 const BUCKET = 'inquiry-attachments';
 const SIGNED_URL_SECONDS = 600;
@@ -19,7 +19,7 @@ const failures = new Map<string, { count: number; lockedUntil: number }>();
 // 문의가 없을 때도 같은 시간이 걸리도록 비교용 더미 해시를 쓴다. (존재 여부 추측 방지)
 const DUMMY_HASH = bcrypt.hashSync('not-a-real-password-1', 10);
 
-export const ACCESS_DENIED_MESSAGE = '이름(또는 이메일) 또는 비밀번호가 일치하지 않습니다.';
+export const ACCESS_DENIED_MESSAGE = '이메일 또는 비밀번호가 일치하지 않습니다.';
 
 function checkLocked(id: string) {
   const entry = failures.get(id);
@@ -38,20 +38,19 @@ function recordFailure(id: string) {
   failures.set(id, entry);
 }
 
-export async function verifyInquiryAccess(
+/** 이름 또는 이메일 + 비밀번호가 맞는지만 확인한다. 상세 내용은 돌려주지 않는다. */
+export async function verifyInquiryCredentials(
   id: string,
   nameOrEmail: string,
   password: string
-): Promise<InquiryAccessResult> {
+): Promise<{ ok: true } | { ok: false; error: string }> {
   if (checkLocked(id)) {
     return { ok: false, error: '확인 시도가 너무 많습니다. 15분 뒤에 다시 시도해 주세요.' };
   }
 
   const { data: row, error } = await supabaseAdmin
     .from('inquiries')
-    .select(
-      'id, inquiry_no, inquiry_type, title, customer_name, email_normalized, product_name_text, content, password_hash, status, created_at'
-    )
+    .select('customer_name, email_normalized, password_hash')
     .eq('id', id)
     .maybeSingle();
   if (error) throw new Error(`문의 조회 실패: ${error.message}`);
@@ -65,7 +64,23 @@ export async function verifyInquiryAccess(
     recordFailure(id);
     return { ok: false, error: ACCESS_DENIED_MESSAGE };
   }
+
   failures.delete(id);
+  return { ok: true };
+}
+
+/**
+ * 문의 상세(내용, 첨부, 등록된 답변)를 읽는다.
+ * 본인 확인을 거친 뒤에만 호출해야 한다. (`getVerifiedInquiryDetail`이 쿠키를 확인하고 부른다.)
+ */
+export async function loadInquiryDetail(id: string): Promise<InquiryDetail | null> {
+  const { data: row, error } = await supabaseAdmin
+    .from('inquiries')
+    .select('inquiry_no, inquiry_type, title, product_name_text, content, status, created_at')
+    .eq('id', id)
+    .maybeSingle();
+  if (error) throw new Error(`문의 조회 실패: ${error.message}`);
+  if (!row) return null;
 
   const [{ data: files, error: filesError }, { data: answer, error: answerError }] =
     await Promise.all([
@@ -104,20 +119,17 @@ export async function verifyInquiryAccess(
   }
 
   return {
-    ok: true,
-    detail: {
-      inquiryNo: row.inquiry_no,
-      inquiryType: row.inquiry_type,
-      title: row.title,
-      productName: row.product_name_text,
-      content: row.content,
-      status: row.status,
-      createdAt: row.created_at,
-      attachments,
-      answer:
-        answer && answer.submitted_at
-          ? { content: answer.content, submittedAt: answer.submitted_at }
-          : null,
-    },
+    inquiryNo: row.inquiry_no,
+    inquiryType: row.inquiry_type,
+    title: row.title,
+    productName: row.product_name_text,
+    content: row.content,
+    status: row.status,
+    createdAt: row.created_at,
+    attachments,
+    answer:
+      answer && answer.submitted_at
+        ? { content: answer.content, submittedAt: answer.submitted_at }
+        : null,
   };
 }

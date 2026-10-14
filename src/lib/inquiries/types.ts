@@ -38,5 +38,4 @@ export type InquiryDetail = {
   answer: { content: string; submittedAt: string } | null;
 };
 
-export type InquiryAccessResult =
-  { ok: true; detail: InquiryDetail } | { ok: false; error: string };
+export type InquiryAccessResult = { ok: true } | { ok: false; error: string };
