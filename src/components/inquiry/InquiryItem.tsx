@@ -30,7 +30,7 @@ export default function InquiryItem({
         replace
         scroll={false}
         aria-current={isSelected ? 'true' : undefined}
-        className={`flex flex-col items-center gap-2 p-6 transition-colors md:flex-row md:justify-between ${isSelected ? 'bg-[#F5F7FA]' : 'hover:bg-[#F5F7FA]'} `}
+        className={`flex flex-col items-start gap-2 p-6 transition-colors md:flex-row md:items-center md:justify-between ${isSelected ? 'bg-[#F5F7FA]' : 'hover:bg-[#F5F7FA]'} `}
       >
         <div className='flex flex-col gap-1.5'>
           <p className='text-[20px] leading-7 font-bold text-[#101828]'>{inquiry.title}</p>
