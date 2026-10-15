@@ -30,6 +30,8 @@ export type InquiryDetail = {
   inquiryNo: string;
   inquiryType: InquiryType;
   title: string;
+  customerName: string; // 작성자 이름 / 업체명
+  email: string; // 작성 시 입력한 이메일 (본인 확인을 마친 작성자에게만 반환)
   productName: string | null;
   content: string;
   status: InquiryStatus;
