@@ -1,6 +1,7 @@
 import AdminInquiryDetailPanel from '@/components/admin/AdminInquiryDetailSection';
 import AdminInquiryList from '@/components/admin/AdminInquiryList';
 import InquiryListFilter from '@/components/inquiry/InquiryListFilter';
+import { requireAdmin } from '@/lib/auth/require-admin';
 import { getAdminInquiryDetail } from '@/lib/admin/inquiries';
 import { getInquiryList, isUuid, parsePage, parseStatus } from '@/lib/inquiries/queries';
 
@@ -9,6 +10,7 @@ export default async function AdminInquiryPage({
 }: {
   searchParams: Promise<{ selected?: string; page?: string; status?: string; keyword?: string }>;
 }) {
+  await requireAdmin();
   const params = await searchParams;
   const page = parsePage(params.page);
   const status = parseStatus(params.status);

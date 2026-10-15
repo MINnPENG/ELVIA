@@ -1,6 +1,6 @@
 import 'server-only';
 
-// import { requireAdmin } from '@/lib/admin/auth'; // TODO: 관리자 인증 함수 생기면 연결
+import { requireAdmin } from '@/lib/auth/require-admin';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { InquiryDetail } from '../inquiries/types';
 import { loadInquiryDetail } from '../inquiries/access';
@@ -12,7 +12,7 @@ export type AdminInquiryDetail = {
 };
 
 export async function getAdminInquiryDetail(id: string): Promise<AdminInquiryDetail | null> {
-  // await requireAdmin();
+  await requireAdmin();
 
   const [detail, authorResult, draftResult] = await Promise.all([
     loadInquiryDetail(id),
