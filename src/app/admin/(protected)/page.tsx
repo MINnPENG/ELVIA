@@ -11,6 +11,9 @@ export default async function AdminHomePage() {
       <Link href='/admin/products' className='underline'>
         제품 관리
       </Link>
+      <Link href='/admin/inquiries' className='underline'>
+        문의 관리
+      </Link>
     </div>
   );
 }
