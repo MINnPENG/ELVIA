@@ -1,9 +1,9 @@
-import AdminInquiryDetailPanel from '@/components/admin/AdminInquiryDetailSection';
 import AdminInquiryList from '@/components/admin/AdminInquiryList';
 import InquiryListFilter from '@/components/inquiry/InquiryListFilter';
 import { requireAdmin } from '@/lib/auth/require-admin';
 import { getAdminInquiryDetail } from '@/lib/admin/inquiries';
 import { getInquiryList, isUuid, parsePage, parseStatus } from '@/lib/inquiries/queries';
+import AdminInquiryDetailSection from '@/components/admin/AdminInquiryDetailSection';
 
 export default async function AdminInquiryPage({
   searchParams,
@@ -41,7 +41,7 @@ export default async function AdminInquiryPage({
           status={status}
           keyword={keyword}
         />
-        <AdminInquiryDetailPanel selectedId={selectedId} data={detail} />
+        <AdminInquiryDetailSection selectedId={selectedId} data={detail} />
       </div>
     </div>
   );
