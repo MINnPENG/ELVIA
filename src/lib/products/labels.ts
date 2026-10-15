@@ -23,7 +23,7 @@ export const FEATURE_INFO: Record<FeatureCode, { name: string; description: stri
     description: '실내에서 잠금 상태 확인',
   },
   STATUS_LED: {
-    name: '상태 표시 (LED)',
+    name: '상태 표시',
     description: 'LED로 작동 상태 안내',
   },
   AUTO_LOCK: {
