@@ -21,7 +21,7 @@ export default function InquiryList({
   const isFiltered = Boolean(status || keyword);
 
   return (
-    <div className='bg-white'>
+    <div className='bg-white py-10'>
       <div className='flex flex-col'>
         <div className='flex h-16 justify-between'>
           <p className='text-[28px] leading-9.5 font-bold text-[#101828]'>문의 및 답변</p>
