@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { cache } from 'react';
+
 import { createClient } from '@/lib/supabase/server';
 
 import { ACCESS_METHOD_LABELS, FEATURE_INFO } from './labels';
@@ -157,7 +159,8 @@ export async function getPublicProducts(
   return (data as unknown as ProductRow[]).map(toProductView);
 }
 
-export async function getPublicProductById(id: string) {
+// 페이지와 generateMetadata 가 같은 제품을 부르므로, 한 요청 안에서는 한 번만 조회한다.
+export const getPublicProductById = cache(async (id: string) => {
   // uuid 형식이 아니면 DB 오류 대신 바로 "없음" 처리한다.
   if (!UUID_PATTERN.test(id)) return null;
 
@@ -172,4 +175,4 @@ export async function getPublicProductById(id: string) {
 
   if (error) throw new Error(`제품 조회 실패: ${error.message}`);
   return data ? toProductView(data as unknown as ProductRow) : null;
-}
+});
