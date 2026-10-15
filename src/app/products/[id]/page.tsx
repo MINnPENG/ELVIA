@@ -1,23 +1,47 @@
 import DetailRightSection from '@/components/product/DetailRightSection';
 import ImageSection from '@/components/product/ImageSection';
 import ProductCard from '@/components/product/ProductCard';
+import { getCategoryConfig } from '@/lib/products/categories';
 import { formatPrice } from '@/lib/products/labels';
 import { getPublicProductById, getPublicProducts } from '@/lib/products/queries';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-export default async function DetailPage({ params }: { params: Promise<{ id: string }> }) {
+type PageProps = { params: Promise<{ id: string }> };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const product = await getPublicProductById(id);
+  if (!product) return { title: '제품을 찾을 수 없습니다 | ELVIA' };
 
-  const featured = await getPublicProducts({ featuredOnly: true });
+  return {
+    title: `${product.name} | ELVIA`,
+    description: product.shortDescription,
+    openGraph: {
+      title: product.name,
+      description: product.shortDescription,
+      images: product.thumbnailUrl ? [product.thumbnailUrl] : undefined,
+    },
+  };
+}
 
+export default async function DetailPage({ params }: PageProps) {
+  const { id } = await params;
+  const product = await getPublicProductById(id);
   if (!product) notFound();
+
+  // 제품이 있을 때만 추천 제품을 조회한다.
+  const featured = await getPublicProducts({ featuredOnly: true });
+  const category = getCategoryConfig(product.category);
+
   return (
     <div>
       <div className='px-7 pt-7'>
-        <p className='text-[14px] text-[#616B7A]'>홈 / 제품 소개 / 도어락 / {product.name}</p>
+        <p className='text-[14px] text-[#616B7A]'>
+          홈 / 제품 소개 / {category.label} / {product.name}
+        </p>
       </div>
       <div className='grid gap-6 px-7 py-16 lg:grid-cols-2'>
         <ImageSection product={product} />
