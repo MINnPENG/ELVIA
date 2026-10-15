@@ -42,7 +42,7 @@ export default function AdminHeader({ logoutAction }: AdminHeaderProps) {
   return (
     <header className='sticky top-0 z-10 border-b border-[#EAECF0] bg-white'>
       <div className='mx-auto flex h-20 w-full max-w-7xl items-center justify-between gap-6 px-6'>
-        <Link href='/admin' className='text-[24px] font-bold tracking-wide text-[#101828]'>
+        <Link href='/admin/products' className='text-[24px] font-bold tracking-wide text-[#101828]'>
           ELVIA <span className='text-[14px] font-medium text-[#667085]'>ADMIN</span>
         </Link>
 
