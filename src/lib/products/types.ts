@@ -15,7 +15,7 @@ export type FeatureView = {
   code: FeatureCode;
   name: string;
   description: string;
-  icon: string | null;
+  icon: string | null; // 공개 주소. 카탈로그에 없으면 null
 };
 export type ColorView = { id: string; name: string; code: string | null; isDefault: boolean };
 export type ImageVariantView = { colorId: string | null; url: string };

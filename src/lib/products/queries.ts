@@ -15,6 +15,7 @@ import type {
 } from './types';
 
 const BUCKET = 'product-assets';
+const ICON_BUCKET = 'feature-icons';
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const PRODUCT_SELECT = `
@@ -60,9 +61,43 @@ type ProductRow = {
   product_manuals: ManualLink | ManualLink[] | null;
 };
 
-function publicUrl(path: string) {
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`;
+function publicUrl(path: string, bucket = BUCKET) {
+  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
 }
+
+type CatalogEntry = { name: string; description: string; icon: string | null; order: number };
+type CatalogRow = {
+  code: FeatureCode;
+  name: string;
+  description: string;
+  icon_path: string | null;
+  sort_order: number;
+};
+
+// 기능 이름, 설명, 아이콘은 DB(feature_catalog)에서 읽는다. 읽지 못하면 빈 맵을 돌려주고,
+// toProductView 가 labels.ts 의 대체값을 쓰므로 제품 화면은 그대로 나온다.
+const getFeatureCatalog = cache(async () => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('feature_catalog')
+    .select('code, name, description, icon_path, sort_order');
+
+  const catalog = new Map<FeatureCode, CatalogEntry>();
+  if (error) {
+    console.error('[getFeatureCatalog]', error.message);
+    return catalog;
+  }
+
+  for (const row of (data ?? []) as CatalogRow[]) {
+    catalog.set(row.code, {
+      name: row.name,
+      description: row.description,
+      icon: row.icon_path ? publicUrl(row.icon_path, ICON_BUCKET) : null,
+      order: row.sort_order,
+    });
+  }
+  return catalog;
+});
 
 function pickUrl(variants: ImageVariantView[], colorId: string | null) {
   const variant =
@@ -76,7 +111,7 @@ function first<T>(value: T | T[] | null): T | null {
   return Array.isArray(value) ? (value[0] ?? null) : value;
 }
 
-function toProductView(row: ProductRow): ProductView {
+function toProductView(row: ProductRow, catalog: Map<FeatureCode, CatalogEntry>): ProductView {
   const colors = [...row.product_colors]
     .sort((a, b) => a.display_order - b.display_order)
     .map((c) => ({
@@ -111,8 +146,22 @@ function toProductView(row: ProductRow): ProductView {
 
   const features = row.product_features
     .map((f) => f.feature_code)
-    .sort((a, b) => featureOrder.indexOf(a) - featureOrder.indexOf(b))
-    .map((code) => ({ code, ...FEATURE_INFO[code] }));
+    // 순서는 DB(feature_catalog.sort_order)를 따르고, 카탈로그에 없는 코드는 코드 상수 순서로 뒤에 둔다.
+    .sort(
+      (a, b) =>
+        (catalog.get(a)?.order ?? 1000 + featureOrder.indexOf(a)) -
+        (catalog.get(b)?.order ?? 1000 + featureOrder.indexOf(b))
+    )
+    .map((code) => {
+      const fallback = FEATURE_INFO[code];
+      const entry = catalog.get(code);
+      return {
+        code,
+        name: entry?.name ?? fallback.name,
+        description: entry?.description ?? fallback.description,
+        icon: entry?.icon ?? null,
+      };
+    });
 
   const manualRow = first(first(row.product_manuals)?.manuals ?? null);
 
@@ -153,10 +202,10 @@ export async function getPublicProducts(
     ? query.eq('is_featured', true).order('featured_order', { ascending: true })
     : query.order('sort_order', { ascending: true });
 
-  const { data, error } = await query;
+  const [{ data, error }, catalog] = await Promise.all([query, getFeatureCatalog()]);
   if (error) throw new Error(`제품 목록 조회 실패: ${error.message}`);
 
-  return (data as unknown as ProductRow[]).map(toProductView);
+  return (data as unknown as ProductRow[]).map((row) => toProductView(row, catalog));
 }
 
 // 페이지와 generateMetadata 가 같은 제품을 부르므로, 한 요청 안에서는 한 번만 조회한다.
@@ -165,14 +214,17 @@ export const getPublicProductById = cache(async (id: string) => {
   if (!UUID_PATTERN.test(id)) return null;
 
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('products')
-    .select(PRODUCT_SELECT)
-    .eq('id', id)
-    .eq('visibility', 'PUBLIC')
-    .is('deleted_at', null)
-    .maybeSingle();
+  const [{ data, error }, catalog] = await Promise.all([
+    supabase
+      .from('products')
+      .select(PRODUCT_SELECT)
+      .eq('id', id)
+      .eq('visibility', 'PUBLIC')
+      .is('deleted_at', null)
+      .maybeSingle(),
+    getFeatureCatalog(),
+  ]);
 
   if (error) throw new Error(`제품 조회 실패: ${error.message}`);
-  return data ? toProductView(data as unknown as ProductRow) : null;
+  return data ? toProductView(data as unknown as ProductRow, catalog) : null;
 });
