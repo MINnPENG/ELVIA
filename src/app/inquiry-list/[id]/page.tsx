@@ -16,6 +16,7 @@ export default async function DetailInquiryPage({ params }: { params: Promise<{ 
         <AnswerField
           label='답변'
           readOnly
+          className='hover:cursor-not-allowed'
           value={detail.answer?.content ?? ''}
           placeholder='아직 답변이 등록되지 않았습니다.'
         />

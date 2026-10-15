@@ -15,9 +15,14 @@ const INQUIRY_STATUS: SelectOption[] = [
 interface InquiryListFilterProps {
   status?: InquiryStatus;
   keyword?: string;
+  placeholder?: string;
 }
 
-export default function InquiryListFilter({ status, keyword }: InquiryListFilterProps) {
+export default function InquiryListFilter({
+  status,
+  keyword,
+  placeholder = '문의 제목 검색',
+}: InquiryListFilterProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -61,7 +66,7 @@ export default function InquiryListFilter({ status, keyword }: InquiryListFilter
         value={keywordValue}
         onChange={(e) => setKeywordValue(e.target.value)}
         onSearch={handleSearch}
-        placeholder='문의 제목 검색'
+        placeholder={placeholder}
         containerClassName='h-12 min-w-0 flex-1'
       />
       <ActionButton
