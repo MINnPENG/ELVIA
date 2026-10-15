@@ -1,7 +1,7 @@
 import type { ProductView } from '@/lib/products/types';
 import { formatPrice } from '@/lib/products/labels';
 import AccessChip from './AccessChip';
-import FeatureCard from './FeatureCard';
+import FeatureBadge from './FeatureBadge';
 import { DownloadButton, LinkButton } from '../buttons/Buttons';
 
 export default function DetailRightSection({ product }: { product: ProductView }) {
@@ -32,9 +32,9 @@ export default function DetailRightSection({ product }: { product: ProductView }
         </div>
         <div>
           <p className='text-[16px] font-bold text-[#0F131A]'>주요 기능</p>
-          <div className='grid grid-cols-1 gap-2 sm:w-80 md:w-full md:grid-cols-2 lg:grid-cols-4'>
-            {product.features.slice(0, 4).map((feature) => (
-              <FeatureCard key={feature.code} feature={feature} />
+          <div className='mt-3 flex flex-wrap gap-4'>
+            {product.features.map((feature) => (
+              <FeatureBadge key={feature.code} feature={feature} />
             ))}
           </div>
         </div>
