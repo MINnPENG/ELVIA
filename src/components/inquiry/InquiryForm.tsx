@@ -13,9 +13,8 @@ import Input, { SelectOption } from '../inputs';
 import Link from 'next/link';
 import type { CreatedInquiry } from '@/lib/inquiries/schema';
 import { ActionButton, SubmitButton } from '../buttons/Buttons';
-import SubmittedCard from './SubmittedCard';
 
-type Status = 'idle' | 'submitting' | 'success' | 'error';
+type Status = 'idle' | 'submitting' | 'error';
 
 const INQUIRY_TYPES: SelectOption[] = [
   { label: '수리 문의', value: 'repair', description: '고장·A/S 접수 문의' },
@@ -23,13 +22,15 @@ const INQUIRY_TYPES: SelectOption[] = [
   { label: '제품 문의', value: 'product', description: '도어락 사용·설치 문의' },
 ];
 
-export default function InquiryForm() {
+type InquiryFormProps = {
+  onSuccess: (inquiry: CreatedInquiry) => void;
+};
+
+export default function InquiryForm({ onSuccess }: InquiryFormProps) {
   const [values, setValues] = useState<InquiryFormValues>(INITIAL_INQUIRY);
   const [agreed, setAgreed] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
-  const [submitted, setSubmitted] = useState<CreatedInquiry | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
-  const [formKey, setFormKey] = useState(0);
 
   const isSubmitting = status === 'submitting';
 
@@ -37,20 +38,12 @@ export default function InquiryForm() {
     setValues((prev) => ({ ...prev, [key]: value }));
   };
 
-  const resetForm = () => {
-    setValues(INITIAL_INQUIRY);
-    setAgreed(false);
-    setFormKey((key) => key + 1);
-  };
-
   const send = async () => {
     setStatus('submitting');
     setErrorMessage('');
     try {
       const result = await submitInquiry(values, agreed);
-      setSubmitted(result);
-      setStatus('success');
-      resetForm();
+      onSuccess(result);
     } catch (e) {
       setErrorMessage(e instanceof Error ? e.message : '문의 접수 중 문제가 생겼습니다.');
       setStatus('error');
@@ -63,11 +56,9 @@ export default function InquiryForm() {
     send();
   };
 
-  if (submitted) return <SubmittedCard inquiry={submitted} />;
-
   return (
     <>
-      <form key={formKey} onSubmit={handleSubmit} className='flex flex-col gap-6'>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
         <div className='grid grid-cols-1 gap-x-6 gap-y-7 md:grid-cols-2'>
           <Input
             type='select'
