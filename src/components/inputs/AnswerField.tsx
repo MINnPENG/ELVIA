@@ -17,7 +17,7 @@ export default function AnswerField({
       label={label}
       readOnly={readOnly}
       required={readOnly ? false : required}
-      className={cn('resize-none hover:cursor-not-allowed', readOnly && '', className)}
+      className={cn('resize-none', readOnly && '', className)}
       {...props}
     />
   );
