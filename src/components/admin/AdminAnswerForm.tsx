@@ -1,7 +1,7 @@
 'use client';
 
 import { InquiryStatus } from '@/lib/inquiries/types';
-import { saveAnswerDraft, submitAnswer } from '@/mock/answer';
+import { saveAnswerDraft, submitAnswer } from '@/app/admin/(protected)/inquiries/actions';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import AnswerField from '../inputs/AnswerField';
