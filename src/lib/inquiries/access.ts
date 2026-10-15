@@ -76,7 +76,9 @@ export async function verifyInquiryCredentials(
 export async function loadInquiryDetail(id: string): Promise<InquiryDetail | null> {
   const { data: row, error } = await supabaseAdmin
     .from('inquiries')
-    .select('inquiry_no, inquiry_type, title, product_name_text, content, status, created_at')
+    .select(
+      'inquiry_no, inquiry_type, title, customer_name, email, product_name_text, content, status, created_at'
+    )
     .eq('id', id)
     .maybeSingle();
   if (error) throw new Error(`문의 조회 실패: ${error.message}`);
@@ -122,6 +124,8 @@ export async function loadInquiryDetail(id: string): Promise<InquiryDetail | nul
     inquiryNo: row.inquiry_no,
     inquiryType: row.inquiry_type,
     title: row.title,
+    customerName: row.customer_name,
+    email: row.email,
     productName: row.product_name_text,
     content: row.content,
     status: row.status,
