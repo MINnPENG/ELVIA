@@ -7,23 +7,17 @@ import AttachmentList from './AttachmentList';
 
 export type InquiryDetailViewProps = {
   detail: InquiryDetail;
-  author?: { name: string; email: string };
   children: ReactNode;
   className?: string;
 };
 
-export default function InquiryDetailView({
-  detail,
-  author,
-  children,
-  className,
-}: InquiryDetailViewProps) {
-  const meta = [
+export default function InquiryDetailView({ detail, children, className }: InquiryDetailViewProps) {
+  const meta: [string, string][] = [
     ['문의 번호', detail.inquiryNo],
     ['문의 구분', INQUIRY_TYPE_LABEL[detail.inquiryType]],
-    ['작성자', `${author?.name} · ${author?.email}`],
+    ['작성자', `${detail.customerName} · ${detail.email}`],
     ['작성일', formatDateTime(detail.createdAt)],
-  ].filter(Boolean) as [string, string][];
+  ];
 
   return (
     <div className={['flex flex-col gap-6 p-6', className].filter(Boolean).join(' ')}>
