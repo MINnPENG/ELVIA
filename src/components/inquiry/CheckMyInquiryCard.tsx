@@ -47,6 +47,7 @@ export default function CheckMyInquiryCard({ selectedId }: { selectedId: string 
             setErrorMessage('');
           }}
           disabled={!selectedId}
+          className={!selectedId ? 'cursor-not-allowed !bg-[#E4E7EC]' : 'bg-white'}
         />
 
         <Input
@@ -62,6 +63,7 @@ export default function CheckMyInquiryCard({ selectedId }: { selectedId: string 
           }}
           error={errorMessage || undefined}
           disabled={!selectedId}
+          className={!selectedId ? 'cursor-not-allowed !bg-[#E4E7EC]' : 'bg-white'}
         />
 
         <SubmitButton
