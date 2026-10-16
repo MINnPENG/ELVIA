@@ -7,20 +7,22 @@ interface AdminInquiryDetailSectionProps {
   data: AdminInquiryDetail | null;
 }
 
-export default function AdminInquiryDetailPanel({
+export default function AdminInquiryDetailSection({
   selectedId,
   data,
 }: AdminInquiryDetailSectionProps) {
   if (!selectedId || !data) {
     return (
-      <div>
-        <p>{selectedId ? '문의를 찾을 수 없습니다.' : '왼쪽 목록에서 문의를 선택해 주세요.'}</p>
+      <div className='p-20'>
+        <p className='text-[20px] text-[#667085]'>
+          {selectedId ? '문의를 찾을 수 없습니다.' : '왼쪽 목록에서 문의를 선택해 주세요.'}
+        </p>
       </div>
     );
   }
 
   return (
-    <InquiryDetailView detail={data.detail} author={data.author} className=''>
+    <InquiryDetailView detail={data.detail} className=''>
       <AdminAnswerForm
         key={selectedId}
         inquiryId={selectedId}

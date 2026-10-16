@@ -17,7 +17,9 @@ export default function AttachmentList({ files }: AttachmentListProps) {
               </span>
               <a
                 href={file.url}
-                aria-label={`${file.name} 다운로드`}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label={`${file.name} 열기`}
                 className='shrink-0 text-[14px] leading-5.5 text-[#101828] hover:underline'
               >
                 다운로드
