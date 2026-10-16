@@ -69,7 +69,13 @@ export async function deliverMail(
       return false;
     };
 
-    const message = await build(inquiryId);
+    // 내용을 만들다 던져도 행이 PROCESSING에 멈추지 않도록 FAILED로 기록한다.
+    let message: Awaited<ReturnType<BuildMessage>>;
+    try {
+      message = await build(inquiryId);
+    } catch (e) {
+      return fail(e instanceof Error ? e.message : String(e));
+    }
     if (!message) return fail('메일 내용을 만들 문의를 찾지 못했습니다.');
 
     const result = await sendMail({ ...message, to: row.recipient_email });
