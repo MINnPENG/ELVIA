@@ -61,7 +61,7 @@ type ProductRow = {
   product_manuals: ManualLink | ManualLink[] | null;
 };
 
-function publicUrl(path: string, bucket = BUCKET) {
+export function publicUrl(path: string, bucket = BUCKET) {
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
 }
 
@@ -99,7 +99,7 @@ const getFeatureCatalog = cache(async () => {
   return catalog;
 });
 
-function pickUrl(variants: ImageVariantView[], colorId: string | null) {
+export function pickUrl(variants: ImageVariantView[], colorId: string | null) {
   const variant =
     variants.find((v) => v.colorId === colorId) ??
     variants.find((v) => v.colorId === null) ??
