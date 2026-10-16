@@ -1,5 +1,5 @@
 import { buildInquiryHref } from '@/lib/inquiries/href';
-import { InquiryListItem, InquiryStatus } from '@/lib/inquiries/types';
+import { InquiryListItem, InquiryStatus, InquiryType } from '@/lib/inquiries/types';
 import Link from 'next/link';
 import StatusChip from '../inquiry/StatusChip';
 import { formatDateTime } from '@/lib/inquiries/format';
@@ -16,6 +16,7 @@ interface AdminInquiryListProps {
   selectedId?: string;
   status?: InquiryStatus;
   keyword?: string;
+  type?: InquiryType;
 }
 
 export default function AdminInquiryList({
@@ -26,8 +27,9 @@ export default function AdminInquiryList({
   selectedId,
   status,
   keyword,
+  type,
 }: AdminInquiryListProps) {
-  const isFiltered = Boolean(status || keyword);
+  const isFiltered = Boolean(status || type || keyword);
 
   return (
     <div>
@@ -50,6 +52,7 @@ export default function AdminInquiryList({
               page,
               status,
               keyword,
+              type,
               selected: isSelected ? null : item.id,
             });
 

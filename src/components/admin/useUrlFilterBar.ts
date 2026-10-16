@@ -2,7 +2,14 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-export function useUrlFilters<K extends string>(keys: readonly K[]) {
+interface UseUrlFiltersOptions {
+  clearOnChange?: string[];
+}
+
+export function useUrlFilters<K extends string>(
+  keys: readonly K[],
+  { clearOnChange = ['page'] }: UseUrlFiltersOptions = {}
+) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -17,7 +24,7 @@ export function useUrlFilters<K extends string>(keys: readonly K[]) {
       if (value) params.set(key, value);
       else params.delete(key);
     }
-    params.delete('page');
+    clearOnChange.forEach((key) => params.delete(key));
     const p = params.toString();
     router.replace(p ? `${pathname}?${p}` : pathname, { scroll: false });
   };

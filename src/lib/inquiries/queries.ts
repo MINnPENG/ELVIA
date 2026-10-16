@@ -2,7 +2,13 @@ import 'server-only';
 
 import { supabaseAdmin } from '@/lib/supabase/admin';
 
-import { INQUIRY_STATUSES, type InquiryListItem, type InquiryStatus } from './types';
+import {
+  INQUIRY_STATUSES,
+  INQUIRY_TYPE_LABEL,
+  InquiryType,
+  type InquiryListItem,
+  type InquiryStatus,
+} from './types';
 
 export const INQUIRY_PAGE_SIZE = 10;
 
@@ -20,13 +26,19 @@ export const parsePage = (value: string | undefined) => {
   return Number.isInteger(n) && n >= 1 ? n : 1;
 };
 
-type ListParams = { status?: InquiryStatus; keyword?: string; page: number };
+type ListParams = { status?: InquiryStatus; type?: InquiryType; keyword?: string; page: number };
+
+const INQUIRY_TYPES = Object.keys(INQUIRY_TYPE_LABEL) as InquiryType[];
+
+export const parseInquiryType = (value: string | undefined): InquiryType | undefined =>
+  INQUIRY_TYPES.find((t) => t === value);
 
 /** 공개 목록. anon 키로는 inquiries를 읽을 수 없으므로 서버에서 service key로 조회하고, 안전한 컬럼만 고른다. */
-export async function getInquiryList({ status, keyword, page }: ListParams) {
+export async function getInquiryList({ status, keyword, page, type }: ListParams) {
   let query = supabaseAdmin.from('inquiries').select(LIST_COLUMNS, { count: 'exact' });
 
   if (status) query = query.eq('status', status);
+  if (type) query = query.eq('inquiry_type', type);
 
   // PostgREST 필터 문법에 쓰이는 문자는 검색어에서 뺀다.
   const kw = keyword?.replace(/[%_,()"\\*]/g, ' ').trim();
