@@ -43,7 +43,7 @@ async function inspectFile(file: File) {
 export async function createInquiry(
   input: InquiryInput,
   file: File | null
-): Promise<CreatedInquiry> {
+): Promise<{ id: string; inquiry: CreatedInquiry }> {
   const attachment = file ? await inspectFile(file) : null;
 
   const id = crypto.randomUUID();
@@ -102,10 +102,14 @@ export async function createInquiry(
     }
   }
 
+  // id는 서버에서 메일을 보낼 때만 쓰고, 브라우저로 넘기는 CreatedInquiry에는 넣지 않는다.
   return {
-    inquiryNo: data.inquiry_no,
-    inquiryType: input.type,
-    email,
-    createdAt: data.created_at,
+    id,
+    inquiry: {
+      inquiryNo: data.inquiry_no,
+      inquiryType: input.type,
+      email,
+      createdAt: data.created_at,
+    },
   };
 }

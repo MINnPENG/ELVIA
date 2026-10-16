@@ -1,6 +1,9 @@
 'use server';
 
+import { after } from 'next/server';
+
 import { createInquiry, InquiryError } from '@/lib/inquiries/create';
+import { enqueueInquiryReceivedMail, sendInquiryReceivedMail } from '@/lib/inquiries/mail';
 import { inquirySchema, type CreatedInquiry } from '@/lib/inquiries/schema';
 
 export type SubmitInquiryResult =
@@ -23,10 +26,16 @@ export async function submitInquiryAction(formData: FormData): Promise<SubmitInq
 
   const file = formData.get('file');
   try {
-    const inquiry = await createInquiry(
+    const { id, inquiry } = await createInquiry(
       parsed.data,
       file instanceof File && file.size > 0 ? file : null
     );
+
+    // 접수는 이미 끝났다. outbox 기록·메일 발송이 실패해도 접수 결과에는 영향을 주지 않는다.
+    // 기록은 응답 전에 남기고(재발송 근거), 실제 발송은 응답 뒤로 미뤄 고객 화면이 느려지지 않게 한다.
+    if (await enqueueInquiryReceivedMail(id, inquiry.email)) {
+      after(() => sendInquiryReceivedMail(id));
+    }
     return { ok: true, inquiry };
   } catch (e) {
     if (e instanceof InquiryError) return { ok: false, error: e.message };
