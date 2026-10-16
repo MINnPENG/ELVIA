@@ -1,23 +1,32 @@
 import 'server-only';
 
 import { deliverMail, type BuildMessage } from '@/lib/mail/outbox';
-import { escapeHtml } from '@/lib/mail/send';
+import { renderMailLayout } from '@/lib/mail/template';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 
+// 문의 제목·내용·답변은 메일에 담지 않는다. 사이트에서 본인 확인(이메일, 문의 비밀번호) 후 보게 한다.
 const buildAnswerCompleted: BuildMessage = async (inquiryId) => {
   const { data: inquiry } = await supabaseAdmin
     .from('inquiries')
-    .select('inquiry_no, title, customer_name')
+    .select('customer_name')
     .eq('id', inquiryId)
     .maybeSingle();
+  if (!inquiry) return null;
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
-  const link = siteUrl ? `${siteUrl}/inquiry-list/${inquiryId}` : null;
+  // 링크 없는 안내 메일은 쓸모가 없으므로 보내지 않고 FAILED로 남긴다.
+  if (!siteUrl) throw new Error('NEXT_PUBLIC_SITE_URL 이 설정되지 않았습니다.');
 
   return {
-    subject: `[ELVIA] 문의하신 내용에 답변이 등록되었습니다${inquiry ? ` (${inquiry.inquiry_no})` : ''}`,
-    // 문의 내용·답변은 메일에 담지 않는다. 본인 확인 후 사이트에서 보게 한다.
-    html: `<p>${escapeHtml(inquiry?.customer_name ?? '고객')}님, 문의하신 「${escapeHtml(inquiry?.title ?? '문의')}」에 답변이 등록되었습니다.</p><p>ELVIA 문의 확인 페이지에서 이메일과 문의 비밀번호로 확인해 주세요.</p>${link ? `<p><a href="${link}">답변 확인하기</a></p>` : ''}`,
+    subject: '[ELVIA] 문의하신 내용에 답변이 등록되었습니다',
+    html: renderMailLayout({
+      label: '답변 완료',
+      heading: '문의하신 내용에 답변이 등록되었습니다',
+      body: `${inquiry.customer_name}님, 아래 버튼을 눌러 문의 확인 페이지에서 이메일과 문의 비밀번호로 답변을 확인해 주세요.`,
+      button: { text: '답변 확인하기', href: `${siteUrl}/inquiry-list` },
+      footer:
+        '본 메일은 발신 전용입니다. 개인정보 보호를 위해 문의 내용과 답변은 메일에 포함하지 않습니다.',
+    }),
   };
 };
 
