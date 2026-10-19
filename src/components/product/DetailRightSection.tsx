@@ -8,7 +8,7 @@ export default function DetailRightSection({ product }: { product: ProductView }
   const priceLabel = formatPrice(product);
 
   return (
-    <div className='flex h-full flex-col justify-between gap-10'>
+    <div className='flex h-full zoom-[0.75] flex-col justify-between gap-10'>
       <div>
         <p className='mb-5 text-[14px] font-bold text-[#1F61C7]'>ELVIA SMART LOCK</p>
         <p className='mb-4 text-[48px] font-bold text-[#0F131A]'>{product.name}</p>

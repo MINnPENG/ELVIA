@@ -60,7 +60,7 @@ export default function ImageSection({ product }: ImageSectionProps) {
 
   return (
     <section aria-label={`${name} 이미지`}>
-      <div className='flex items-center gap-5'>
+      <div className='flex items-center justify-center gap-5'>
         {currentImages.length > 1 && (
           <ProductImageList
             images={currentImages}
@@ -69,7 +69,7 @@ export default function ImageSection({ product }: ImageSectionProps) {
           />
         )}
 
-        <div className='relative aspect-6/7 flex-1 overflow-hidden rounded-2xl bg-[#F6F8FA]'>
+        <div className='relative aspect-6/7 flex-1 overflow-hidden rounded-2xl bg-[#F6F8FA] md:max-w-120 lg:max-w-80'>
           {mainImage ? (
             <Image
               key={mainImage.url}
