@@ -148,9 +148,14 @@ export default function InquiryForm({ onSuccess }: InquiryFormProps) {
               className='size-5 cursor-pointer border-[#D0D5DD] accent-[#1F66E5]'
             />
             개인정보 수집·이용에 동의합니다.{' '}
-            <Link href='/' className='ml-1'>
+            <a
+              href='/ELVIA_privacy_policy.pdf'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='ml-1 underline'
+            >
               자세히 보기
-            </Link>
+            </a>
           </label>
 
           <div className='flex items-center justify-end gap-3'>
