@@ -7,7 +7,7 @@ import { Menu, X } from 'lucide-react';
 type MenuItem = { id: string; label: string; href: string };
 
 const MENU_ITEMS: MenuItem[] = [
-  { id: 'about', label: '회사 소개', href: '/about' },
+  { id: 'about', label: '회사 소개', href: '/' },
   {
     id: 'products',
     label: '제품 소개',
