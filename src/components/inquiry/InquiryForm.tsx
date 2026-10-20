@@ -89,7 +89,7 @@ export default function InquiryForm({ onSuccess }: InquiryFormProps) {
             label='이메일'
             required
             placeholder='email@example.com'
-            hint='답변 완료 알림을 보내드립니다.'
+            hint='문의 확인에 사용됩니다.'
             value={values.email}
             onChange={(e) => updateField('email', e.target.value)}
           />
