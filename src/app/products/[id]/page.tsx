@@ -43,7 +43,7 @@ export default async function DetailPage({ params }: PageProps) {
           홈 / 제품 소개 / {category.label} / {product.name}
         </p>
       </div>
-      <div className='grid gap-6 px-7 py-16 lg:grid-cols-2'>
+      <div className='grid items-center gap-6 px-7 py-16 lg:grid-cols-2'>
         <ImageSection product={product} />
         <DetailRightSection product={product} />
       </div>

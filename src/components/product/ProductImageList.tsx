@@ -13,7 +13,7 @@ interface ProductImageListProps {
 
 export default function ProductImageList({ images, activeIndex, onSelect }: ProductImageListProps) {
   return (
-    <ul className='hidden w-23 shrink-0 flex-col gap-3 md:flex'>
+    <ul className='hidden w-12 shrink-0 flex-col gap-3 md:flex'>
       {images.map((image, index) => {
         const isActive = index === activeIndex;
 
