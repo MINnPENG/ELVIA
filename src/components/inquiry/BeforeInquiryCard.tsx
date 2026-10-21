@@ -11,7 +11,7 @@ export default function BeforeInquiryCard() {
 
       <div className='flex flex-col'>
         <p className='text-[12px] leading-4.5 text-white'>고객센터</p>
-        <p className='text-[16px] leading-6.5 text-white'>070-4745-4034</p>
+        <p className='text-[16px] leading-6.5 text-white'>1566-0462</p>
       </div>
       <div className='flex flex-col'>
         <p className='text-[12px] leading-4.5 text-white'>운영시간</p>
@@ -19,7 +19,9 @@ export default function BeforeInquiryCard() {
       </div>
       <div className='flex flex-col'>
         <p className='text-[12px] leading-4.5 text-white'>답변 안내</p>
-        <p className='text-[16px] leading-6.5 text-white'>등록한 이메일로 완료 알림</p>
+        <p className='text-[16px] leading-6.5 text-white'>
+          답변이 완료되면 답변 완료로 표시됩니다.
+        </p>
       </div>
       <p className='mb-15 text-[12px] leading-4.5 text-white'>
         문의 비밀번호는 암호화되어 저장되며, 문의 확인에만 사용됩니다.
