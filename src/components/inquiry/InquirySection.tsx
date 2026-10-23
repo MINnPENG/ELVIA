@@ -23,9 +23,7 @@ export default function InquirySection() {
           {submitted ? '문의가 정상적으로 접수되었습니다' : '제품 사용 중 궁금한 점을 남겨주세요'}
         </p>
         <p className='text-[16px] leading-6.25 text-[#667085]'>
-          {submitted
-            ? '작성하신 이메일과 문의 비밀번호로 답변 상태를 확인할 수 있습니다'
-            : '문의 내용을 확인한 뒤 입력하신 이메일로 답변 완료 소식을 알려드립니다.'}
+          작성하신 이메일과 문의 비밀번호로 답변 상태를 확인할 수 있습니다
         </p>
       </div>
 
