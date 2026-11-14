@@ -4,7 +4,7 @@ import { CATEGORY_FILTER_OPTIONS, VISIBILITY_FILTER_OPTIONS } from '@/lib/admin/
 import SelectField from '../inputs/SelecField';
 import AdminFilterBar from './AdminFilterBar';
 import FilterTap from './FilterTap';
-import { useUrlFilters } from './useUrlFilterBar';
+import { useUrlFilters } from '../../hooks/useUrlFilterBar';
 
 const KEYS = ['category', 'visibility', 'search'] as const;
 
