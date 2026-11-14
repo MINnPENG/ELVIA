@@ -15,7 +15,10 @@ const pretendard = localFont({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='ko' className={pretendard.variable}>
-      <body className={`${pretendard.className} flex min-h-screen flex-col`}>
+      <body
+        className={`${pretendard.className} flex min-h-screen flex-col`}
+        suppressHydrationWarning
+      >
         <SiteChrome>
           <Header />
         </SiteChrome>
