@@ -1,8 +1,8 @@
-import { AdminProduct } from '@/lib/admin/products';
 import { formatPrice } from '@/lib/products/labels';
 import { cn } from '@/utils/cn';
 import { ActionButton, LinkButton } from '../buttons/Buttons';
 import Image from 'next/image';
+import { AdminProduct } from '@/lib/admin/types';
 
 export const PRODUCT_GRID = 'grid grid-cols-[minmax(0,2.6fr)_1.2fr_0.8fr_0.9fr_1.8fr] items-center';
 

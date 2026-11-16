@@ -1,4 +1,4 @@
-import { AdminProduct } from '@/lib/admin/products';
+import { AdminProduct } from '@/lib/admin/types';
 import ProductListItem, { PRODUCT_GRID } from './ProductListItem';
 import { cn } from '@/utils/cn';
 

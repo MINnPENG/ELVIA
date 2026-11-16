@@ -9,7 +9,7 @@ import {
 import SelectField, { SelectOption } from '../inputs/SelecField';
 import AdminFilterBar from './AdminFilterBar';
 import FilterTap, { FilterTapOption } from './FilterTap';
-import { useUrlFilters } from './useUrlFilterBar';
+import { useUrlFilters } from '../../hooks/useUrlFilterBar';
 
 const STATUS_OPTIONS: FilterTapOption[] = [
   { label: '전체', value: '' },

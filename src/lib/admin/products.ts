@@ -3,29 +3,9 @@ import 'server-only';
 import { createClient } from '@/lib/supabase/server';
 import type { AdminProductFilters } from './productFilter';
 import { pickUrl, publicUrl } from '../products/queries';
+import { AdminProductRow } from './types';
 
 export const ADMIN_PRODUCT_PAGE_SIZE = 6;
-
-export type AdminProduct = {
-  id: string;
-  name: string;
-  model_name: string;
-  category: 'DOOR_LOCK' | 'ACCESSORY';
-  visibility: 'PUBLIC' | 'PRIVATE';
-  price_amount: number | null;
-  price_display_status: 'DISPLAY' | 'TBD' | 'HIDDEN';
-  sort_order: number;
-  updated_at: string;
-  thumbnail_url: string | null;
-};
-
-type AdminProductRow = Omit<AdminProduct, 'thumbnail_url'> & {
-  product_images: {
-    display_order: number;
-    is_primary: boolean;
-    product_image_variants: { color_id: string | null; storage_path: string }[];
-  }[];
-};
 
 function pickThumbnail(images: AdminProductRow['product_images']) {
   const sorted = [...images].sort((a, b) => a.display_order - b.display_order);
